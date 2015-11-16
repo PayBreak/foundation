@@ -1,3 +1,8 @@
+# v0.7.0
+2015-11-16
+
+## First release as PayBreak\foundation
+
 # v0.6.2
 2015-07-22
 
