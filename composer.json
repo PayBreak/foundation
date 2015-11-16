@@ -1,0 +1,39 @@
+{
+    "name": "paybreak/foundation",
+    "description": "PHP Foundation Library",
+    "keywords": [
+        "foundation"
+    ],
+    "homepage": "https://github.com/PayBreak/foundation",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "PayBreak",
+            "email": "dev@paybreak.com",
+            "homepage": "https://github.com/PayBreak",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : ">=5.5.0",
+        "guzzlehttp/guzzle": "~6.0",
+        "psr/log": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "4.*",
+        "scrutinizer/ocular": "~1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "PayBreak\\Foundation\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PayBreak\\Foundation\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
