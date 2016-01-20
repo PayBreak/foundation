@@ -1,3 +1,9 @@
+# v0.8.0
+2016-01-20
+
+## Bug Fixes
+- Removed unused `guzzlehttp/guzzle` from dependencies
+
 # v0.7.0
 2015-11-16
 
