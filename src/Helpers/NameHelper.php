@@ -28,13 +28,21 @@ class NameHelper
         $string[0] = strtolower($string[0]);
         return strtolower(preg_replace("/([A-Z])/", "_$1", $string));
     }
+
     /**
      * @author WN
      * @param string $string
+     * @param bool $firstLow
      * @return string
      */
-    public static function snakeToCamel($string)
+    public static function snakeToCamel($string, $firstLow = false)
     {
-        return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+        $rtn = str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+
+        if ($firstLow) {
+            $rtn[0] = strtolower($rtn[0]);
+        }
+
+        return $rtn;
     }
 }
