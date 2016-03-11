@@ -32,6 +32,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
     const TYPE_INT = 4;
     const TYPE_STRING = 8;
     const TYPE_FLOAT = 16;
+    const TYPE_OBJECT = 32;
 
     private $data = [];
 
@@ -77,6 +78,8 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
                     return $this->set($property, $arguments);
                 case 'get':
                     return $this->get($property);
+                case 'add':
+                    return $this->add($property, $arguments);
             }
 // @codeCoverageIgnoreStart
         }
@@ -96,12 +99,22 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
      */
     public function toArray($recursively = false)
     {
+        return $this->genArray($this->data, $recursively);
+    }
+
+    private function genArray(array $data, $recursively)
+    {
         $rtn = [];
 
-        foreach ($this->data as $k => $v) {
+        foreach ($data as $k => $v) {
 
             if ($recursively && $v instanceof Arrayable) {
                 $rtn[$k] = $v->toArray(true);
+                continue;
+            }
+
+            if ($recursively && is_array($v)) {
+                $rtn[$k] = $this->genArray($v, $recursively);
                 continue;
             }
 
@@ -151,14 +164,9 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
      * @param array $arguments
      * @return $this
      */
-    private function set($property, $arguments)
+    private function set($property, array $arguments)
     {
-        if (count($arguments) == 0) {
-
-            trigger_error('Missing argument on method ' . __CLASS__ . '::set_' . $property . '() call', E_USER_ERROR);
-// @codeCoverageIgnoreStart
-        }
-// @codeCoverageIgnoreEnd
+        $this->checkArguments($arguments, $property);
 
         if ($arguments[0] === null) {
 
@@ -169,6 +177,42 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         $this->data[$property] = $this->processInputValue($arguments[0], $property);
 
         return $this;
+    }
+
+    /**
+     * @author WN
+     * @param string $property
+     * @param array $arguments
+     * @return $this
+     * @throws Exception
+     */
+    private function add($property, array $arguments)
+    {
+        $this->checkArguments($arguments, $property);
+
+        if (!array_key_exists($property, $this->properties) || !$this->isArrayOfObjects($this->properties[$property])) {
+            throw new Exception('Can not use addProperty on non object array property');
+        }
+
+        if ($arguments[0] === null) {
+
+            $this->data[$property] = null;
+            return $this;
+        }
+
+        $this->data[$property][] = $this->processObjectType($arguments[0], str_replace('[]', '', $this->properties[$property]));
+
+        return $this;
+    }
+
+    private function checkArguments(array $arguments, $property)
+    {
+        if (count($arguments) == 0) {
+
+            trigger_error('Missing argument on method ' . __CLASS__ . '::set_' . $property . '() call', E_USER_ERROR);
+// @codeCoverageIgnoreStart
+        }
+// @codeCoverageIgnoreEnd
     }
 
     /**
@@ -201,6 +245,18 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
             if ($this->isInternalType($type)) {
 
                 return $this->processInternalType($value, $type);
+            }
+
+            if ($this->isArrayOfObjects($type) && is_array($value)) {
+
+                $ar = [];
+                $class = $this->getClassNameFromType($type);
+
+                foreach ($value as $obj) {
+                    $ar[] = $this->processObjectType($obj, $class);
+                }
+
+                return $ar;
             }
 
             return $this->processObjectType($value, $type);
@@ -265,6 +321,12 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         );
     }
 
+    /**
+     * @author WN
+     * @param string $class
+     * @return bool
+     * @throws Exception
+     */
     private function classExists($class)
     {
         if (class_exists($class)) {
@@ -323,5 +385,15 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         }
 
         return gettype($value);
+    }
+
+    private function isArrayOfObjects($type)
+    {
+        return strpos($type, '[]') !== false;
+    }
+
+    private function getClassNameFromType($type)
+    {
+        return str_replace('[]', '', $type);
     }
 }
