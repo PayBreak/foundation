@@ -66,7 +66,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
      * @author WN
      * @param string $name
      * @param array $arguments
-     * @return $this|null
+     * @return $this
      */
     public function __call($name, $arguments)
     {
@@ -83,14 +83,10 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
                 case 'add':
                     return $this->add($property, $arguments);
             }
-// @codeCoverageIgnoreStart
         }
-// @codeCoverageIgnoreEnd
 
-        trigger_error('Call to undefined method '.__CLASS__.'::'.$name.'()', E_USER_ERROR);
-// @codeCoverageIgnoreStart
+        throw new \RuntimeException('Call to undefined method '.__CLASS__.'::'.$name.'()');
     }
-// @codeCoverageIgnoreEnd
 
     /**
      * To Array

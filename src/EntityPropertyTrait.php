@@ -21,11 +21,8 @@ trait EntityPropertyTrait
     private function checkArguments(array $arguments, $property)
     {
         if (count($arguments) == 0) {
-
-            trigger_error('Missing argument on method ' . __CLASS__ . '::set_' . $property . '() call', E_USER_ERROR);
-// @codeCoverageIgnoreStart
+            throw new \RuntimeException('Missing argument on method ' . __CLASS__ . '::set_' . $property . '() call');
         }
-// @codeCoverageIgnoreEnd
     }
 
     /**

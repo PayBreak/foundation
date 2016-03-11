@@ -99,52 +99,35 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
 
     public function testSetNonExistingProperty()
     {
-        set_error_handler([$this, 'entityErrorHandler']);
-
         $this->setExpectedException(
-            '\Exception',
+            '\RunTimeException',
             'Call to undefined method PayBreak\Foundation\AbstractEntity::setNonExisting()'
         );
 
         $entity = new DummyEntity();
         $entity->setNonExisting();
-
-        restore_error_handler();
     }
 
     public function testMissingArgumentOnSet()
     {
-        set_error_handler([$this, 'entityErrorHandler']);
-
         $this->setExpectedException(
-            '\Exception',
+            '\RunTimeException',
             'Missing argument on method PayBreak\Foundation\AbstractEntity::set_field() call'
         );
 
         $entity = new DummyEntity();
         $entity->setField();
-
-        restore_error_handler();
     }
 
     public function testGetNonExistingProperty()
     {
-        set_error_handler([$this, 'entityErrorHandler']);
-
         $this->setExpectedException(
-            '\Exception',
+            '\RunTimeException',
             'Call to undefined method PayBreak\Foundation\AbstractEntity::getNonExisting()'
         );
 
         $entity = new DummyEntity();
         $entity->getNonExisting();
-
-        restore_error_handler();
-    }
-
-    function entityErrorHandler($errno, $errstr, $errfile, $errline)
-    {
-        throw new \Exception($errstr);
     }
 
     public function testIntProperty()
