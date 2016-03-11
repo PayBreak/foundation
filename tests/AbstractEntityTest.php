@@ -319,6 +319,47 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('PayBreak\Foundation\AbstractEntity', $entity->getObj());
     }
+
+    public function testArrayOfObjects()
+    {
+        $entity = DummyEntity::make([
+            'obj_arr' => [
+                [
+                    'field' => 123,
+                ],
+                [
+                    'field' => 234,
+                ]
+            ]
+        ]);
+
+        $this->assertInternalType('array', $entity->getObjArr());
+        $this->assertCount(2, $entity->getObjArr());
+        $this->assertInstanceOf(DummyEntity::class, $entity->getObjArr()[0]);
+    }
+
+    public function testAdd()
+    {
+        $entity = new DummyEntity();
+
+        $entity->addObjArr(DummyEntity::make([]));
+
+        $this->assertInternalType('array', $entity->getObjArr());
+        $this->assertCount(1, $entity->getObjArr());
+        $this->assertInstanceOf(DummyEntity::class, $entity->getObjArr()[0]);
+    }
+
+    public function testAddWrong()
+    {
+        $entity = new DummyEntity();
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Exceptions\InvalidArgumentException',
+            'Expected value to be object of [Tests\DummyEntity] type stdClass] was given'
+        );
+
+        $entity->addObjArr(new \stdClass());
+    }
 }
 
 /**
@@ -334,6 +375,9 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
  * @method float|null getFive()
  * @method $this setObj(DummyEntity $obj)
  * @method DummyEntity|null getObj()
+ * @method $this setArrObj(array $ar)
+ * @method $this addObjArr(DummyEntity $obj)
+ * @method DummyEntity[]|null getObjArr()
  */
 class DummyEntity extends AbstractEntity
 {
@@ -347,5 +391,6 @@ class DummyEntity extends AbstractEntity
         'five' => self::TYPE_FLOAT,
         'obj' => 'Tests\DummyEntity',
         'obj_two' => 'Tests\DummyEntitySecond',
+        'obj_arr' => 'Tests\DummyEntity[]',
     ];
 }
