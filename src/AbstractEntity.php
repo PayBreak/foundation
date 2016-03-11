@@ -100,20 +100,29 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         return $this->genArray($this->data, $recursively);
     }
 
+    /**
+     * @author WN
+     * @param array $data
+     * @param bool $recursively
+     * @return array
+     */
     private function genArray(array $data, $recursively)
     {
         $rtn = [];
 
         foreach ($data as $k => $v) {
 
-            if ($recursively && $v instanceof Arrayable) {
-                $rtn[$k] = $v->toArray(true);
-                continue;
-            }
+            if ($recursively) {
 
-            if ($recursively && is_array($v)) {
-                $rtn[$k] = $this->genArray($v, $recursively);
-                continue;
+                if ($v instanceof Arrayable) {
+                    $rtn[$k] = $v->toArray(true);
+                    continue;
+                }
+
+                if (is_array($v)) {
+                    $rtn[$k] = $this->genArray($v, $recursively);
+                    continue;
+                }
             }
 
             $rtn[$k] = $v;
@@ -236,14 +245,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
 
             if ($this->isArrayOfObjects($type) && is_array($value)) {
 
-                $ar = [];
-                $class = $this->getClassNameFromType($type);
-
-                foreach ($value as $obj) {
-                    $ar[] = $this->processObjectType($obj, $class);
-                }
-
-                return $ar;
+                return $this->processArrayOfObj($value, $type);
             }
 
             return $this->processObjectType($value, $type);

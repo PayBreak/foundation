@@ -82,6 +82,25 @@ trait EntityPropertyTrait
 
     /**
      * @author WN
+     * @param $value
+     * @param $type
+     * @return array
+     * @throws InvalidArgumentException
+     */
+    private function processArrayOfObj(array $value, $type)
+    {
+        $ar = [];
+        $class = $this->getClassNameFromType($type);
+
+        foreach ($value as $obj) {
+            $ar[] = $this->processObjectType($obj, $class);
+        }
+
+        return $ar;
+    }
+
+    /**
+     * @author WN
      * @param $type
      * @return bool
      */
