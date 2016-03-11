@@ -15,6 +15,7 @@ use PayBreak\Foundation\Contracts\Entity;
 use PayBreak\Foundation\Contracts\Jsonable;
 use PayBreak\Foundation\Contracts\Makeable;
 use PayBreak\Foundation\Exceptions\InvalidArgumentException;
+use PayBreak\Foundation\Helpers\NameHelper;
 
 /**
  * Abstract Entity
@@ -51,7 +52,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
 
             if ($entity->isPropertyAllowed($k)) {
 
-                $entity->{'set' . $entity->snakeToCamel($k)}($v);
+                $entity->{'set' . NameHelper::snakeToCamel($k)}($v);
             }
         }
 
@@ -67,7 +68,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
     public function __call($name, $arguments)
     {
         $action = substr($name, 0, 3);
-        $property = $this->camelToSnake(substr($name, 3));
+        $property = NameHelper::camelToSnake(substr($name, 3));
 
         if ($this->isPropertyAllowed($property)) {
 
@@ -322,26 +323,5 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         }
 
         return gettype($value);
-    }
-
-    /**
-     * @author WN
-     * @param string $string
-     * @return string
-     */
-    private function camelToSnake($string)
-    {
-        $string[0] = strtolower($string[0]);
-        return strtolower(preg_replace("/([A-Z])/", "_$1", $string));
-    }
-
-    /**
-     * @author WN
-     * @param $string
-     * @return mixed
-     */
-    private function snakeToCamel($string)
-    {
-        return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
     }
 }
