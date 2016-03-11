@@ -87,6 +87,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         $entity = DummyEntity::make([
             'test_field' => 2,
             'field'      => DummyEntity::make([]),
+            'one'        => [],
         ]);
 
         $this->assertInternalType('array', $entity->toArray());
@@ -343,6 +344,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         $entity = new DummyEntity();
 
         $entity->addObjArr(DummyEntity::make([]));
+        $entity->addObjArr(null);
 
         $this->assertInternalType('array', $entity->getObjArr());
         $this->assertCount(1, $entity->getObjArr());
@@ -359,6 +361,18 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         );
 
         $entity->addObjArr(new \stdClass());
+    }
+
+    public function testAddOnDifferentType()
+    {
+        $entity = new DummyEntity();
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Exception',
+            'Can not use addProperty on non object array property'
+        );
+
+        $entity->addOne([]);
     }
 }
 

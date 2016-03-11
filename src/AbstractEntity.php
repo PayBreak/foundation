@@ -27,6 +27,8 @@ use PayBreak\Foundation\Helpers\NameHelper;
  */
 abstract class AbstractEntity implements Entity, Makeable, Jsonable
 {
+    use EntityPropertyTrait;
+
     const TYPE_ARRAY = 1;
     const TYPE_BOOL = 2;
     const TYPE_INT = 4;
@@ -196,23 +198,12 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
 
         if ($arguments[0] === null) {
 
-            $this->data[$property] = null;
             return $this;
         }
 
         $this->data[$property][] = $this->processObjectType($arguments[0], str_replace('[]', '', $this->properties[$property]));
 
         return $this;
-    }
-
-    private function checkArguments(array $arguments, $property)
-    {
-        if (count($arguments) == 0) {
-
-            trigger_error('Missing argument on method ' . __CLASS__ . '::set_' . $property . '() call', E_USER_ERROR);
-// @codeCoverageIgnoreStart
-        }
-// @codeCoverageIgnoreEnd
     }
 
     /**
@@ -296,46 +287,6 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
     }
 
     /**
-     * @param mixed $value
-     * @param string $class
-     * @return object mixed
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
-    private function processObjectType($value, $class)
-    {
-        $this->classExists($class);
-
-        if (is_array($value) && is_subclass_of($class, 'PayBreak\Foundation\Contracts\Makeable')) {
-
-            return $class::make($value);
-        }
-
-        if (is_a($value, $class)) {
-
-            return $value;
-        }
-
-        throw new InvalidArgumentException(
-            'Expected value to be object of [' . $class . '] type ' . $this->checkType($value) . '] was given'
-        );
-    }
-
-    /**
-     * @author WN
-     * @param string $class
-     * @return bool
-     * @throws Exception
-     */
-    private function classExists($class)
-    {
-        if (class_exists($class)) {
-            return true;
-        }
-        throw new Exception('Non existing class');
-    }
-
-    /**
      * @author WN
      * @param $value
      * @param $type
@@ -370,30 +321,5 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
             self::TYPE_BOOL => 'bool',
             self::TYPE_FLOAT => 'float',
         ];
-    }
-
-    /**
-     * @author WN
-     * @param mixed $value
-     * @return string
-     */
-    private function checkType($value)
-    {
-        if (is_object($value)) {
-
-            return get_class($value);
-        }
-
-        return gettype($value);
-    }
-
-    private function isArrayOfObjects($type)
-    {
-        return strpos($type, '[]') !== false;
-    }
-
-    private function getClassNameFromType($type)
-    {
-        return str_replace('[]', '', $type);
     }
 }
