@@ -87,6 +87,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         $entity = DummyEntity::make([
             'test_field' => 2,
             'field'      => DummyEntity::make([]),
+            'one'        => [],
         ]);
 
         $this->assertInternalType('array', $entity->toArray());
@@ -98,52 +99,35 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
 
     public function testSetNonExistingProperty()
     {
-        set_error_handler([$this, 'entityErrorHandler']);
-
         $this->setExpectedException(
-            '\Exception',
+            '\RunTimeException',
             'Call to undefined method PayBreak\Foundation\AbstractEntity::setNonExisting()'
         );
 
         $entity = new DummyEntity();
         $entity->setNonExisting();
-
-        restore_error_handler();
     }
 
     public function testMissingArgumentOnSet()
     {
-        set_error_handler([$this, 'entityErrorHandler']);
-
         $this->setExpectedException(
-            '\Exception',
+            '\RunTimeException',
             'Missing argument on method PayBreak\Foundation\AbstractEntity::set_field() call'
         );
 
         $entity = new DummyEntity();
         $entity->setField();
-
-        restore_error_handler();
     }
 
     public function testGetNonExistingProperty()
     {
-        set_error_handler([$this, 'entityErrorHandler']);
-
         $this->setExpectedException(
-            '\Exception',
+            '\RunTimeException',
             'Call to undefined method PayBreak\Foundation\AbstractEntity::getNonExisting()'
         );
 
         $entity = new DummyEntity();
         $entity->getNonExisting();
-
-        restore_error_handler();
-    }
-
-    function entityErrorHandler($errno, $errstr, $errfile, $errline)
-    {
-        throw new \Exception($errstr);
     }
 
     public function testIntProperty()
@@ -319,6 +303,60 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('PayBreak\Foundation\AbstractEntity', $entity->getObj());
     }
+
+    public function testArrayOfObjects()
+    {
+        $entity = DummyEntity::make([
+            'obj_arr' => [
+                [
+                    'field' => 123,
+                ],
+                [
+                    'field' => 234,
+                ]
+            ]
+        ]);
+
+        $this->assertInternalType('array', $entity->getObjArr());
+        $this->assertCount(2, $entity->getObjArr());
+        $this->assertInstanceOf(DummyEntity::class, $entity->getObjArr()[0]);
+    }
+
+    public function testAdd()
+    {
+        $entity = new DummyEntity();
+
+        $entity->addObjArr(DummyEntity::make([]));
+        $entity->addObjArr(null);
+
+        $this->assertInternalType('array', $entity->getObjArr());
+        $this->assertCount(1, $entity->getObjArr());
+        $this->assertInstanceOf(DummyEntity::class, $entity->getObjArr()[0]);
+    }
+
+    public function testAddWrong()
+    {
+        $entity = new DummyEntity();
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Exceptions\InvalidArgumentException',
+            'Expected value to be object of [Tests\DummyEntity] type stdClass] was given'
+        );
+
+        $entity->addObjArr(new \stdClass());
+    }
+
+    public function testAddOnDifferentType()
+    {
+        $entity = new DummyEntity();
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Exception',
+            'Can not use addProperty on non object array property'
+        );
+
+        $entity->addTwo(123);
+    }
 }
 
 /**
@@ -334,6 +372,9 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
  * @method float|null getFive()
  * @method $this setObj(DummyEntity $obj)
  * @method DummyEntity|null getObj()
+ * @method $this setArrObj(array $ar)
+ * @method $this addObjArr(DummyEntity $obj)
+ * @method DummyEntity[]|null getObjArr()
  */
 class DummyEntity extends AbstractEntity
 {
@@ -347,5 +388,6 @@ class DummyEntity extends AbstractEntity
         'five' => self::TYPE_FLOAT,
         'obj' => 'Tests\DummyEntity',
         'obj_two' => 'Tests\DummyEntitySecond',
+        'obj_arr' => 'Tests\DummyEntity[]',
     ];
 }

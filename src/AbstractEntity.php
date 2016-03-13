@@ -15,6 +15,7 @@ use PayBreak\Foundation\Contracts\Entity;
 use PayBreak\Foundation\Contracts\Jsonable;
 use PayBreak\Foundation\Contracts\Makeable;
 use PayBreak\Foundation\Exceptions\InvalidArgumentException;
+use PayBreak\Foundation\Helpers\NameHelper;
 
 /**
  * Abstract Entity
@@ -26,11 +27,14 @@ use PayBreak\Foundation\Exceptions\InvalidArgumentException;
  */
 abstract class AbstractEntity implements Entity, Makeable, Jsonable
 {
+    use EntityPropertyTrait;
+
     const TYPE_ARRAY = 1;
     const TYPE_BOOL = 2;
     const TYPE_INT = 4;
     const TYPE_STRING = 8;
     const TYPE_FLOAT = 16;
+    const TYPE_OBJECT = 32;
 
     private $data = [];
 
@@ -51,7 +55,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
 
             if ($entity->isPropertyAllowed($k)) {
 
-                $entity->{'set' . $entity->snakeToCamel($k)}($v);
+                $entity->{'set' . NameHelper::snakeToCamel($k)}($v);
             }
         }
 
@@ -62,12 +66,12 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
      * @author WN
      * @param string $name
      * @param array $arguments
-     * @return $this|null
+     * @return $this
      */
     public function __call($name, $arguments)
     {
         $action = substr($name, 0, 3);
-        $property = $this->camelToSnake(substr($name, 3));
+        $property = NameHelper::camelToSnake(substr($name, 3));
 
         if ($this->isPropertyAllowed($property)) {
 
@@ -76,15 +80,13 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
                     return $this->set($property, $arguments);
                 case 'get':
                     return $this->get($property);
+                case 'add':
+                    return $this->add($property, $arguments);
             }
-// @codeCoverageIgnoreStart
         }
-// @codeCoverageIgnoreEnd
 
-        trigger_error('Call to undefined method '.__CLASS__.'::'.$name.'()', E_USER_ERROR);
-// @codeCoverageIgnoreStart
+        throw new \RuntimeException('Call to undefined method '.__CLASS__.'::'.$name.'()');
     }
-// @codeCoverageIgnoreEnd
 
     /**
      * To Array
@@ -95,13 +97,32 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
      */
     public function toArray($recursively = false)
     {
+        return $this->genArray($this->data, $recursively);
+    }
+
+    /**
+     * @author WN
+     * @param array $data
+     * @param bool $recursively
+     * @return array
+     */
+    private function genArray(array $data, $recursively)
+    {
         $rtn = [];
 
-        foreach ($this->data as $k => $v) {
+        foreach ($data as $k => $v) {
 
-            if ($recursively && $v instanceof Arrayable) {
-                $rtn[$k] = $v->toArray(true);
-                continue;
+            if ($recursively) {
+
+                if ($v instanceof Arrayable) {
+                    $rtn[$k] = $v->toArray(true);
+                    continue;
+                }
+
+                if (is_array($v)) {
+                    $rtn[$k] = $this->genArray($v, $recursively);
+                    continue;
+                }
             }
 
             $rtn[$k] = $v;
@@ -150,14 +171,9 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
      * @param array $arguments
      * @return $this
      */
-    private function set($property, $arguments)
+    private function set($property, array $arguments)
     {
-        if (count($arguments) == 0) {
-
-            trigger_error('Missing argument on method ' . __CLASS__ . '::set_' . $property . '() call', E_USER_ERROR);
-// @codeCoverageIgnoreStart
-        }
-// @codeCoverageIgnoreEnd
+        $this->checkArguments($arguments, $property);
 
         if ($arguments[0] === null) {
 
@@ -167,6 +183,41 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
 
         $this->data[$property] = $this->processInputValue($arguments[0], $property);
 
+        return $this;
+    }
+
+    /**
+     * @author WN
+     * @param string $property
+     * @param array $arguments
+     * @return $this
+     * @throws Exception
+     */
+    private function add($property, array $arguments)
+    {
+        $this->checkArguments($arguments, $property);
+
+        if (!array_key_exists($property, $this->properties) ||
+            !($this->isArrayOfObjects($this->properties[$property]) || $this->properties[$property] == self::TYPE_ARRAY)
+        ) {
+            throw new Exception('Can not use addProperty on non object array property');
+        }
+
+        if ($arguments[0] === null) {
+
+            return $this;
+        }
+
+        if ($this->isArrayOfObjects($this->properties[$property])) {
+            $this->addArrayField(
+                $this->data[$property],
+                $this->processObjectType($arguments[0], str_replace('[]', '', $this->properties[$property])),
+                $arguments
+            );
+            return $this;
+        }
+
+        $this->addArrayField($this->data[$property], $arguments[0], $arguments);
         return $this;
     }
 
@@ -200,6 +251,11 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
             if ($this->isInternalType($type)) {
 
                 return $this->processInternalType($value, $type);
+            }
+
+            if ($this->isArrayOfObjects($type) && is_array($value)) {
+
+                return $this->processArrayOfObj($value, $type);
             }
 
             return $this->processObjectType($value, $type);
@@ -239,40 +295,6 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
     }
 
     /**
-     * @param mixed $value
-     * @param string $class
-     * @return object mixed
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
-    private function processObjectType($value, $class)
-    {
-        $this->classExists($class);
-
-        if (is_array($value) && is_subclass_of($class, 'PayBreak\Foundation\Contracts\Makeable')) {
-
-            return $class::make($value);
-        }
-
-        if (is_a($value, $class)) {
-
-            return $value;
-        }
-
-        throw new InvalidArgumentException(
-            'Expected value to be object of [' . $class . '] type ' . $this->checkType($value) . '] was given'
-        );
-    }
-
-    private function classExists($class)
-    {
-        if (class_exists($class)) {
-            return true;
-        }
-        throw new Exception('Non existing class');
-    }
-
-    /**
      * @author WN
      * @param $value
      * @param $type
@@ -307,41 +329,5 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
             self::TYPE_BOOL => 'bool',
             self::TYPE_FLOAT => 'float',
         ];
-    }
-
-    /**
-     * @author WN
-     * @param mixed $value
-     * @return string
-     */
-    private function checkType($value)
-    {
-        if (is_object($value)) {
-
-            return get_class($value);
-        }
-
-        return gettype($value);
-    }
-
-    /**
-     * @author WN
-     * @param string $string
-     * @return string
-     */
-    private function camelToSnake($string)
-    {
-        $string[0] = strtolower($string[0]);
-        return strtolower(preg_replace("/([A-Z])/", "_$1", $string));
-    }
-
-    /**
-     * @author WN
-     * @param $string
-     * @return mixed
-     */
-    private function snakeToCamel($string)
-    {
-        return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
     }
 }

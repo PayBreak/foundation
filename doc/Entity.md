@@ -18,6 +18,21 @@ Methods name are build this way `getPropertyName()`. Camel case property name wi
 
 ## Abstract Entity
 
+### Types
+
+```
+const TYPE_ARRAY = 1;
+const TYPE_BOOL = 2;
+const TYPE_INT = 4;
+const TYPE_STRING = 8;
+const TYPE_FLOAT = 16;
+# const TYPE_OBJECT = 32;
+```
+
+#### Object Type
+
+Property type can be defined as specific `class` and `class[]` as well.
+
 ### Implementation
 
 ```php
@@ -33,7 +48,7 @@ class Person extends \PayBreak\Foundation\AbstractEntity
 {
     protected $properties = [
         'first_name',
-        'last_name',
+        'last_name' => self::TYPE_STRING,
     ];
 }
 ```
