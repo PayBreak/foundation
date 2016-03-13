@@ -11,7 +11,7 @@
 namespace PayBreak\Foundation\Decision\Condition;
 
 use PayBreak\Foundation\Data\Value;
-use PayBreak\Foundation\Exception;
+use PayBreak\Foundation\Decision\ProcessingException;
 
 /**
  * Is Default Condition
@@ -36,7 +36,7 @@ class IsDefaultCondition extends AbstractCondition implements ConditionInterface
      * @author WN
      * @param Value $value
      * @return bool
-     * @throws \PayBreak\Foundation\Exception
+     * @throws ProcessingException
      */
     public function checkCondition(Value $value)
     {
@@ -44,7 +44,7 @@ class IsDefaultCondition extends AbstractCondition implements ConditionInterface
 
             if ($value->getType() != Value::VALUE_DEFAULT) {
 
-                throw new Exception('Value is not default type');
+                throw new ProcessingException('Value is not default type');
             }
 
             if ($value->getValue() == $this->getValue()->getValue()) {
@@ -55,6 +55,6 @@ class IsDefaultCondition extends AbstractCondition implements ConditionInterface
             return false;
         }
 
-        throw new Exception('Internal value not set. Could not perform any checks.');
+        throw new ProcessingException('Internal value not set. Could not perform any checks.');
     }
 }

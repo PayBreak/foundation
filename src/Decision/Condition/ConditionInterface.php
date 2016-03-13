@@ -69,7 +69,7 @@ interface ConditionInterface extends Entity
      *
      * @param Value $value
      * @return bool
-     * @throws \PayBreak\Foundation\Exception
+     * @throws \PayBreak\Foundation\Decision\ProcessingException
      */
     public function checkCondition(Value $value);
 

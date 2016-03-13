@@ -11,7 +11,7 @@
 namespace PayBreak\Foundation\Decision\Condition;
 
 use PayBreak\Foundation\Data\Value;
-use PayBreak\Foundation\Exception;
+use PayBreak\Foundation\Decision\ProcessingException;
 
 /**
  * Less Than Condition
@@ -34,7 +34,7 @@ class LessThanCondition extends AbstractCondition implements ConditionInterface
      *
      * @param Value $value
      * @return bool
-     * @throws \PayBreak\Foundation\Exception
+     * @throws ProcessingException
      */
     public function checkCondition(Value $value)
     {
@@ -44,7 +44,7 @@ class LessThanCondition extends AbstractCondition implements ConditionInterface
 
         if (!in_array($value->getType(), [Value::VALUE_INT, Value::VALUE_FLOAT])) {
 
-            throw new Exception('This condition can be performed only over int and float types.');
+            throw new ProcessingException('This condition can be performed only over int and float types.');
         }
 
         if ($value->getValue() < $this->getValue()->getValue()) {

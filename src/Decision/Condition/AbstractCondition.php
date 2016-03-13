@@ -12,6 +12,7 @@ namespace PayBreak\Foundation\Decision\Condition;
 
 use PayBreak\Foundation\AbstractEntity;
 use PayBreak\Foundation\Data\Value;
+use PayBreak\Foundation\Decision\ProcessingException;
 use PayBreak\Foundation\Decision\Risk;
 use PayBreak\Foundation\Exception;
 
@@ -33,7 +34,7 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
      */
     public function getValue()
     {
-        return parent::getValue();
+        return $this->__call('getValue', []);
     }
 
     /**
@@ -50,7 +51,7 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
      */
     public function getRisk()
     {
-        return parent::getRisk();
+        return $this->__call('getRisk', []);
     }
 
     /**
@@ -59,14 +60,95 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
      */
     public function setRisk($risk)
     {
-        return parent::setRisk(Risk::normalize($risk));
+        return $this->__call('setRisk', [Risk::normalize($risk)]);
     }
 
+    /**
+     * @param bool $recursively
+     * @return array
+     */
+    public function toArray($recursively = false)
+    {
+        $ar = parent::toArray(true);
+
+        $ar['condition'] = $this->getCondition();
+
+        return $ar;
+    }
+
+    /**
+     * @param array $components
+     * @return ConditionInterface
+     * @throws Exception
+     */
+    public static function make(array $components)
+    {
+        if (!array_key_exists('condition', $components)) {
+
+            throw new Exception('ConditionInterface component is required.');
+        }
+
+        $entity = self::initializeCondition($components['condition']);
+
+        if (!array_key_exists('risk', $components)) {
+
+            throw new Exception('Risk component is required.');
+        }
+
+        $entity->setRisk($components['risk']);
+
+        if (array_key_exists('value', $components)) {
+
+            if (is_array($components['value'])) {
+                $components['value'] = Value::make($components['value']);
+            }
+
+            $entity->setValue($components['value']);
+        }
+
+        return $entity;
+    }
+
+    /**
+     * @param $condition
+     * @return ConditionInterface
+     * @throws ProcessingException
+     */
+    private static function initializeCondition($condition)
+    {
+        if (!in_array($condition, AbstractCondition::availableTypes())) {
+
+            throw new ProcessingException('Unavailable condition type.');
+        }
+
+        switch ($condition) {
+            case ConditionInterface::CONDITION_EQUAL:
+                return new EqualCondition();
+            case ConditionInterface::CONDITION_NOT_EQUAL:
+                return new NotEqualCondition();
+            case ConditionInterface::CONDITION_LESS_THAN:
+                return new LessThanCondition();
+            case ConditionInterface::CONDITION_GREATER_THAN:
+                return new GreaterThanCondition();
+            case ConditionInterface::CONDITION_LESS_THAN_OR_EQUAL_TO:
+                return new LessThanOrEqualCondition();
+            case ConditionInterface::CONDITION_GREATER_THAN_OR_EQUAL_TO:
+                return new GreaterThanOrEqualCondition();
+            case ConditionInterface::CONDITION_IF_EMPTY:
+                return new IfEmptyCondition();
+            case ConditionInterface::CONDITION_IF_NOT_EXISTS:
+                return new IfNotExistsCondition();
+            case ConditionInterface::CONDITION_IS_DEFAULT:
+                return new IsDefaultCondition();
+        }
+
+        throw new ProcessingException('Unsupported condition type.');
+    }
 
     /**
      * @param \PayBreak\Foundation\Data\Value $value
      * @return bool
-     * @throws Exception
+     * @throws ProcessingException
      */
     protected function compareType(Value $value)
     {
@@ -82,10 +164,10 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
                 return true;
             }
 
-            throw new Exception('Values types are different. Unable to compare.');
+            throw new ProcessingException('Values types are different. Unable to compare.');
         }
 
-        throw new Exception('Internal value not set. Could not perform any checks.');
+        throw new ProcessingException('Internal value not set. Could not perform any checks.');
     }
 
     /**
@@ -111,7 +193,7 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
     /**
      * @param int $type
      * @return string
-     * @throws Exception
+     * @throws ProcessingException
      */
     public static function typeAsString($type)
     {
@@ -128,7 +210,7 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
         ];
 
         if (!array_key_exists($type, $ar)) {
-            throw new Exception('Invalid condition type [' . $type . ']');
+            throw new ProcessingException('Invalid condition type [' . $type . ']');
         }
 
         return $ar[$type];
