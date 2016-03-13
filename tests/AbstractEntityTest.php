@@ -355,7 +355,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
             'Can not use addProperty on non object array property'
         );
 
-        $entity->addOne([]);
+        $entity->addTwo(123);
     }
 }
 
