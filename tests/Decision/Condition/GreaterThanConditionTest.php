@@ -61,4 +61,15 @@ class GreaterThanConditionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($entity->checkCondition(Value::make(['value' => 2.0, 'type' => Value::VALUE_FLOAT])));
     }
+
+    /**
+     * @author EB
+     */
+    public function testForBitwiseFalse()
+    {
+        $entity = new GreaterThanCondition();
+        $entity->setValue(Value::make(['value' => 2, 'type' => Value::VALUE_DEFAULT]));
+
+        $this->assertFalse($entity->checkCondition(Value::make(['value' => 2, 'type' => Value::VALUE_DEFAULT])));
+    }
 }

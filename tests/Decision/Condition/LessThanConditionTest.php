@@ -65,4 +65,15 @@ class LessThanConditionTest extends \PHPUnit_Framework_TestCase
         );
         $entity->checkCondition(Value::make(['value' => 1, 'type' => Value::VALUE_INT]));
     }
+
+    /**
+     * @author EB
+     */
+    public function testForBitwiseFalse()
+    {
+        $entity = new LessThanCondition();
+        $entity->setValue(Value::make(['value' => 2, 'type' => Value::VALUE_DEFAULT]));
+
+        $this->assertFalse($entity->checkCondition(Value::make(['value' => 2, 'type' => Value::VALUE_DEFAULT])));
+    }
 }
