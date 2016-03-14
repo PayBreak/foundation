@@ -95,4 +95,118 @@ class AbstractConditionTest extends \PHPUnit_Framework_TestCase
 
         AbstractCondition::typeAsString(-23);
     }
+
+    /**
+     * @author EB
+     */
+    public function testConditionNotEqualCondition()
+    {
+        $entity = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_NOT_EQUAL,
+                'value'     => Value::make(['value' => 5, 'type' => Value::TYPE_INT]),
+                'risk'     => 0.4,
+            ]
+        );
+
+        $this->assertSame(ConditionInterface::CONDITION_NOT_EQUAL, $entity->getCondition());
+        $this->assertSame(5, $entity->getValue()->getValue());
+        $this->assertSame(0.4, $entity->getRisk());
+    }
+
+    /**
+     * @author EB
+     */
+    public function testConditionLessThanCondition()
+    {
+        $entity = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_LESS_THAN,
+                'value'     => Value::make(['value' => 5, 'type' => Value::TYPE_INT]),
+                'risk'     => 0.4,
+            ]
+        );
+
+        $this->assertSame(ConditionInterface::CONDITION_LESS_THAN, $entity->getCondition());
+    }
+
+    /**
+     * @author EB
+     */
+    public function testConditionLessThanOrEqualToCondition()
+    {
+        $entity = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_LESS_THAN_OR_EQUAL_TO,
+                'value'     => Value::make(['value' => 5, 'type' => Value::TYPE_INT]),
+                'risk'     => 0.4,
+            ]
+        );
+
+        $this->assertSame(ConditionInterface::CONDITION_LESS_THAN_OR_EQUAL_TO, $entity->getCondition());
+    }
+
+    /**
+     * @author EB
+     */
+    public function testConditionGreaterThanOrEqualToCondition()
+    {
+        $entity = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_GREATER_THAN_OR_EQUAL_TO,
+                'value'     => Value::make(['value' => 5, 'type' => Value::TYPE_INT]),
+                'risk'     => 0.4,
+            ]
+        );
+
+        $this->assertSame(ConditionInterface::CONDITION_GREATER_THAN_OR_EQUAL_TO, $entity->getCondition());
+    }
+
+    /**
+     * @author EB
+     */
+    public function testConditionIfEmptyCondition()
+    {
+        $entity = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_IF_EMPTY,
+                'value'     => Value::make(['value' => 5, 'type' => Value::TYPE_INT]),
+                'risk'     => 0.4,
+            ]
+        );
+
+        $this->assertSame(ConditionInterface::CONDITION_IF_EMPTY, $entity->getCondition());
+    }
+
+    /**
+     * @author EB
+     */
+    public function testConditionIfNotExistsCondition()
+    {
+        $entity = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_IF_NOT_EXISTS,
+                'value'     => Value::make(['value' => 5, 'type' => Value::TYPE_INT]),
+                'risk'     => 0.4,
+            ]
+        );
+
+        $this->assertSame(ConditionInterface::CONDITION_IF_NOT_EXISTS, $entity->getCondition());
+    }
+
+    /**
+     * @author EB
+     */
+    public function testConditionIsDefaultCondition()
+    {
+        $entity = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_IS_DEFAULT,
+                'value'     => Value::make(['value' => 5, 'type' => Value::TYPE_INT]),
+                'risk'     => 0.4,
+            ]
+        );
+
+        $this->assertSame(ConditionInterface::CONDITION_IS_DEFAULT, $entity->getCondition());
+    }
 }
