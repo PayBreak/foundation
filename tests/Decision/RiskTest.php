@@ -39,4 +39,13 @@ class RiskTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(0.5, $entity->setRisk(0.5)->getRisk());
         $this->assertSame(0.78, $entity->setRisk(0.78)->getRisk());
     }
+
+    public function testSetWrongType()
+    {
+        $entity = new Risk();
+
+        $this->setExpectedException(\InvalidArgumentException::class, 'Risk must be numeric.');
+
+        $entity->setRisk('www');
+    }
 }

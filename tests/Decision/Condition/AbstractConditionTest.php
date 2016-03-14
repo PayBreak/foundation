@@ -83,4 +83,16 @@ class AbstractConditionTest extends \PHPUnit_Framework_TestCase
             ]
         );
     }
+
+    public function testTypeAsString()
+    {
+        $this->assertSame('equal', AbstractCondition::typeAsString(ConditionInterface::CONDITION_EQUAL));
+    }
+
+    public function testTypeAsStringNonExisting()
+    {
+        $this->setExpectedException(ProcessingException::class, 'Invalid condition type [-23]');
+
+        AbstractCondition::typeAsString(-23);
+    }
 }
