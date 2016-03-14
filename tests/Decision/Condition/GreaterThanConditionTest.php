@@ -35,4 +35,30 @@ class GreaterThanConditionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($entity->checkCondition(Value::make(['value' => 2.1, 'type' => Value::VALUE_FLOAT])));
     }
+
+    /**
+     * @author EB
+     */
+    public function testForProcessingException()
+    {
+        $entity = new GreaterThanCondition();
+        $entity->setValue(Value::make(['value' => [], 'type' => Value::VALUE_ARRAY]));
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Decision\ProcessingException',
+            'This condition can be performed only over int and float types.'
+        );
+        $entity->checkCondition(Value::make(['value' => [], 'type' => Value::VALUE_ARRAY]));
+    }
+
+    /**
+     * @author EB
+     */
+    public function testForFalse()
+    {
+        $entity = new GreaterThanCondition();
+        $entity->setValue(Value::make(['value' => 2.0, 'type' => Value::VALUE_FLOAT]));
+
+        $this->assertFalse($entity->checkCondition(Value::make(['value' => 2.0, 'type' => Value::VALUE_FLOAT])));
+    }
 }

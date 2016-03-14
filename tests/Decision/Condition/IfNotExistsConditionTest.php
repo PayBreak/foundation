@@ -34,4 +34,16 @@ class IfNotExistsConditionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($entity->checkCondition(Value::make(['type' => Value::VALUE_NON_EXISTS])));
     }
+
+    /**
+     * @author EB
+     */
+    public function testForFalse()
+    {
+        $entity = new IfNotExistsCondition();
+
+        $this->assertFalse(
+            $entity->checkCondition(Value::make(['value' => 1, 'type' => Value::VALUE_INT]))
+        );
+    }
 }

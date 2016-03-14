@@ -39,4 +39,46 @@ class IsDefaultConditionTest extends \PHPUnit_Framework_TestCase
             )
         );
     }
+
+    /**
+     * @author EB
+     */
+    public function testNoneDefaultTypeException()
+    {
+        $entity = new IsDefaultCondition();
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Decision\ProcessingException',
+            'Internal value not set. Could not perform any checks.'
+        );
+        $entity->checkCondition(Value::make(['value' => 1, 'type' => Value::VALUE_INT]));
+    }
+
+    /**
+     * @author EB
+     */
+    public function testForFalse()
+    {
+        $entity = new IsDefaultCondition();
+        $entity->setValue(Value::make(['value' => Value::DEFAULT_NOT_GIVEN, 'type' => Value::VALUE_DEFAULT]));
+
+        $this->assertFalse(
+            $entity->checkCondition(Value::make(['value' => 1, 'type' => Value::VALUE_DEFAULT]))
+        );
+    }
+
+    /**
+     * @author EB
+     */
+    public function testForValueNotExceptedType()
+    {
+        $entity = new IsDefaultCondition();
+        $entity->setValue(Value::make(['value' => 1, 'type' => Value::VALUE_INT]));
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Decision\ProcessingException',
+            'Value is not default type'
+        );
+        $entity->checkCondition(Value::make(['value' => 1, 'type' => Value::VALUE_INT]));
+    }
 }

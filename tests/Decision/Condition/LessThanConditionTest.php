@@ -35,4 +35,34 @@ class LessThanConditionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($entity->checkCondition(Value::make(['value' => 1.9, 'type' => Value::VALUE_FLOAT])));
     }
+
+    /**
+     * @author EB
+     */
+    public function testForProcessingException()
+    {
+        $entity = new LessThanCondition();
+        $entity->setValue(Value::make(['value' => 'Test', 'type' => Value::VALUE_STRING]));
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Decision\ProcessingException',
+            'This condition can be performed only over int and float types.'
+        );
+        $entity->checkCondition(Value::make(['value' => 'Test', 'type' => Value::VALUE_STRING]));
+    }
+
+    /**
+     * @author EB
+     */
+    public function testValuesAreDifferentException()
+    {
+        $entity = new LessThanCondition();
+        $entity->setValue(Value::make(['value' => 'Test', 'type' => Value::VALUE_STRING]));
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Decision\ProcessingException',
+            'Values types are different. Unable to compare.'
+        );
+        $entity->checkCondition(Value::make(['value' => 1, 'type' => Value::VALUE_INT]));
+    }
 }

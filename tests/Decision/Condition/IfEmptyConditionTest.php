@@ -34,4 +34,16 @@ class IfEmptyConditionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($entity->checkCondition(Value::make(['type' => Value::VALUE_EMPTY])));
     }
+
+    /**
+     * @author EB
+     */
+    public function testForFalse()
+    {
+        $entity = new IfEmptyCondition();
+
+        $this->assertFalse(
+            $entity->checkCondition(Value::make(['value' => 'Test', 'type' => Value::VALUE_STRING]))
+        );
+    }
 }
