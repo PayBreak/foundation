@@ -37,9 +37,10 @@ class AdviserProcessor implements AdviserProcessorInterface
      * @author WN
      * @param Adviser $adviser
      * @param DataSources $dataSources
+     * @param float $defaultRisk
      * @return Advice
      */
-    public function process(Adviser $adviser, DataSources $dataSources)
+    public function process(Adviser $adviser, DataSources $dataSources, $defaultRisk = Risk::MINIMUM_RISK)
     {
         $advice = Advice::make(['adviser_type' => $adviser->getType(), 'adviser_name' => $adviser->getName()]);
         $risk = [];
@@ -48,6 +49,10 @@ class AdviserProcessor implements AdviserProcessorInterface
             if ($rule->getActive() != Rule::INACTIVE) {
                 $risk = $this->processRule($rule, $advice, $dataSources, $risk);
             }
+        }
+
+        if(count($risk) == 0) {
+            $risk[] = $defaultRisk;
         }
 
         $advice->setRisk(Risk::normalize(max($risk)));
