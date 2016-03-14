@@ -14,6 +14,7 @@ use PayBreak\Foundation\Decision\Condition\ConditionInterface;
 use PayBreak\Foundation\Decision\DataSourceInterface;
 use PayBreak\Foundation\Decision\DataSources;
 use PayBreak\Foundation\Decision\Processor\AdviserProcessor;
+use PayBreak\Foundation\Decision\Processor\RuleProcessor;
 use PayBreak\Foundation\Decision\Rule;
 use PayBreak\Foundation\Decision\Condition\AbstractCondition;
 use PayBreak\Foundation\Data\Value;
@@ -31,7 +32,8 @@ class AdviserProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $adviserProcessor = new AdviserProcessor();
+        $mockRuleProcessor = $this->getMock('PayBreak\Foundation\Decision\Processor\RuleProcessorInterface');
+        $adviserProcessor = new AdviserProcessor($mockRuleProcessor);
         $this->assertInstanceOf('PayBreak\Foundation\Decision\Processor\AdviserProcessor', $adviserProcessor);
     }
 
@@ -62,7 +64,8 @@ class AdviserProcessorTest extends \PHPUnit_Framework_TestCase
         $source = new DataSources();
         $source->addDataSource(new DummyDataSource());
 
-        $processor = new AdviserProcessor();
+        $ruleProcessor = new RuleProcessor();
+        $processor = new AdviserProcessor($ruleProcessor);
 
         $advice = $processor->process($adviser, $source);
 
