@@ -25,7 +25,7 @@ interface AdviserProcessorInterface
      * @author WN
      * @param Adviser $adviser
      * @param DataSources $dataSources
-     * @return static
+     * @return Advice
      */
     public function process(Adviser $adviser, DataSources $dataSources);
 }
