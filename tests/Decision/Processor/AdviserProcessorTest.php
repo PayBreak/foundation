@@ -37,6 +37,9 @@ class AdviserProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PayBreak\Foundation\Decision\Processor\AdviserProcessor', $adviserProcessor);
     }
 
+    /**
+     * @author EB
+     */
     public function testProcess()
     {
         $adviserType = 'COM';
@@ -74,6 +77,138 @@ class AdviserProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($adviserName, $advice->getAdviserName());
     }
 
+    /**
+     * @author EB
+     */
+    public function testProcessForProcessingException()
+    {
+        $adviserType = 'COM';
+        $adviserName = 'Test Adviser';
+
+        $condition = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_GREATER_THAN,
+                'value'     => ['value' => 'Test', 'type' => Value::TYPE_STRING],
+                'risk'     => 0.6,
+            ]
+        );
+
+        $rules = new Rule();
+        $rules->setSource('testSource')
+            ->setField('testField')
+            ->setDescription('Test Rule')
+            ->setActive(Rule::ACTIVE)
+            ->setType(Value::TYPE_INT)
+            ->setConditions([$condition]);
+
+        $adviser = new Adviser();
+        $adviser->setType($adviserType)->setName($adviserName)->setRules([$rules]);
+
+        $source = new DataSources();
+        $source->addDataSource(new DummyDataSource());
+
+        $ruleProcessor = new RuleProcessor();
+        $processor = new AdviserProcessor($ruleProcessor);
+
+        $advice = $processor->process($adviser, $source);
+        $advices = $advice->getAdvices();
+        $exceptions = $advices[0]->getExceptions();
+        $this->assertNotNull($exceptions);
+
+        $this->assertInstanceOf('PayBreak\Foundation\Decision\Advice', $advice);
+        $this->assertEquals(
+            $exceptions[0],
+            'Processing condition [{"value":"Test","type":8}]: Values types are different. Unable to compare.'
+        );
+    }
+
+    /**
+     * @author EB
+     */
+    public function testProcessFailFieldTypeException()
+    {
+        $adviserType = 'COM';
+        $adviserName = 'Test Adviser';
+
+        $ruleSource = 'testSource';
+        $ruleField = 'testFieldReturnInt';
+        $ruleDescription = 'Test Rule Description';
+
+        $condition = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_GREATER_THAN,
+                'value'     => ['value' => 'Test', 'type' => Value::TYPE_STRING],
+                'risk'     => 0.6,
+            ]
+        );
+
+        $rules = new Rule();
+        $rules->setSource($ruleSource)
+            ->setField($ruleField)
+            ->setDescription($ruleDescription)
+            ->setActive(Rule::ACTIVE)
+            ->setType(Value::TYPE_INT)
+            ->setConditions([$condition]);
+
+        $adviser = new Adviser();
+        $adviser->setType($adviserType)->setName($adviserName)->setRules([$rules]);
+
+        $source = new DataSources();
+        $source->addDataSource(new DummyDataSource());
+
+        $ruleProcessor = new RuleProcessor();
+        $processor = new AdviserProcessor($ruleProcessor);
+
+        $advice = $processor->process($adviser, $source);
+        $this->assertEquals(
+            'Processing rule ['.$ruleDescription.'] issue:Field ['.$ruleField.'] in source ['.$ruleSource.'] must be Value type',
+            $advice->getExceptions()[0]
+        );
+    }
+
+    /**
+     * @author EB
+     */
+    public function testProcessFailFieldNotExistsException()
+    {
+        $adviserType = 'COM';
+        $adviserName = 'Test Adviser';
+
+        $ruleSource = 'testSource';
+        $ruleField = 'testFieldNotExists';
+        $ruleDescription = 'Test Rule Description';
+
+        $condition = AbstractCondition::make(
+            [
+                'condition' => ConditionInterface::CONDITION_GREATER_THAN,
+                'value'     => ['value' => 'Test', 'type' => Value::TYPE_STRING],
+                'risk'     => 0.6,
+            ]
+        );
+
+        $rules = new Rule();
+        $rules->setSource($ruleSource)
+            ->setField($ruleField)
+            ->setDescription($ruleDescription)
+            ->setActive(Rule::ACTIVE)
+            ->setType(Value::TYPE_INT)
+            ->setConditions([$condition]);
+
+        $adviser = new Adviser();
+        $adviser->setType($adviserType)->setName($adviserName)->setRules([$rules]);
+
+        $source = new DataSources();
+        $source->addDataSource(new DummyDataSource());
+
+        $ruleProcessor = new RuleProcessor();
+        $processor = new AdviserProcessor($ruleProcessor);
+
+        $advice = $processor->process($adviser, $source);
+        $this->assertEquals(
+            'Processing rule ['.$ruleDescription.'] issue:Field ['.$ruleField.'] not exists in source ['.$ruleSource.']',
+            $advice->getExceptions()[0]
+        );
+    }
 }
 
 class DummyDataSource implements DataSourceInterface
@@ -91,5 +226,10 @@ class DummyDataSource implements DataSourceInterface
     public function testField()
     {
         return Value::make(['type' => Value::VALUE_INT, 'value' => 6]);
+    }
+
+    public function testFieldReturnInt()
+    {
+        return 1;
     }
 }
