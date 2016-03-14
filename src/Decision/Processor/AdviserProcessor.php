@@ -24,13 +24,13 @@ use PayBreak\Foundation\Decision\Rule;
  * @author WN
  * @package PayBreak\Foundation\Decision\Processor
  */
-class AdviserProcessor
+class AdviserProcessor implements AdviserProcessorInterface
 {
     private $ruleProcessor;
 
-    public function __construct()
+    public function __construct(RuleProcessorInterface $ruleProcessor)
     {
-        $this->ruleProcessor = new RuleProcessor();
+        $this->ruleProcessor = $ruleProcessor;
     }
 
     /**

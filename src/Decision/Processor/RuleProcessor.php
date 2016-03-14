@@ -22,7 +22,7 @@ use PayBreak\Foundation\Decision\RuleAdvice;
  * @author WN
  * @package PayBreak\Foundation\Decision\Processor
  */
-class RuleProcessor
+class RuleProcessor implements RuleProcessorInterface
 {
     /**
      * @author WN
