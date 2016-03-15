@@ -39,7 +39,7 @@ class NameHelper
     {
         $rtn = str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($string))));
 
-        if ($firstLow) {
+        if ($firstLowercase) {
             $rtn[0] = strtolower($rtn[0]);
         }
 

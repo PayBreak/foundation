@@ -197,7 +197,9 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
     {
         $this->checkArguments($arguments, $property);
 
-        if (!array_key_exists($property, $this->properties) || !$this->isArrayOfObjects($this->properties[$property])) {
+        if (!array_key_exists($property, $this->properties) ||
+            !($this->isArrayOfObjects($this->properties[$property]) || $this->properties[$property] == self::TYPE_ARRAY)
+        ) {
             throw new Exception('Can not use addProperty on non object array property');
         }
 
@@ -206,8 +208,16 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
             return $this;
         }
 
-        $this->data[$property][] = $this->processObjectType($arguments[0], str_replace('[]', '', $this->properties[$property]));
+        if ($this->isArrayOfObjects($this->properties[$property])) {
+            $this->addArrayField(
+                $this->data[$property],
+                $this->processObjectType($arguments[0], str_replace('[]', '', $this->properties[$property])),
+                $arguments
+            );
+            return $this;
+        }
 
+        $this->addArrayField($this->data[$property], $arguments[0], $arguments);
         return $this;
     }
 
@@ -221,6 +231,10 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         if (array_key_exists($property, $this->data)) {
 
             return $this->data[$property];
+        }
+
+        if (array_key_exists($property, $this->properties) && $this->isArray($this->properties[$property])) {
+            return [];
         }
 
         return null;

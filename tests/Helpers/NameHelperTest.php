@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+
 namespace Tests\Helpers;
 
 use PayBreak\Foundation\Helpers\NameHelper;
@@ -22,11 +23,14 @@ class NameHelperTest extends \PHPUnit_Framework_TestCase
 {
     public function testCamelToSnake()
     {
+        $this->assertSame('xx_ya', NameHelper::camelToSnake('XxYa'));
         $this->assertSame('xxx_yyy_www', NameHelper::camelToSnake('XxxYyyWww'));
     }
 
     public function testSnakeToCamel()
     {
+        $this->assertSame('XxYa', NameHelper::snakeToCamel('xx_ya'));
+        $this->assertSame('xxYa', NameHelper::snakeToCamel('xx_ya', true));
         $this->assertSame('XxxYyyWww', NameHelper::snakeToCamel('xxx_yyy_www'));
         $this->assertSame('XxxYyyWww', NameHelper::snakeToCamel('xxx_yYy_www'));
     }
