@@ -85,13 +85,22 @@ echo $tester;
 
 ### toJson
 
-AbstractEntity has `toJson` method implemented. This will return a json object of the `toArray()` output. 
+AbstractEntity has `toJson` method implemented. This will return a json object of the `toArray()` output.
+
 ```php
 echo $tester->toJson(1000);
 ```
+
 ```json
 {
     "first_name":"Jo",
     "last_name":"Doe"
 }
+```
+
+### DocBlock Generator
+
+Example:
+```sh
+php scripts/entityDocGenerator.php  --class="\PayBreak\Foundation\Decision\Risk"
 ```
