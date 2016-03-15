@@ -75,3 +75,10 @@ AbstractEntity has `__toString()` method implemented. It'll return *JSON* string
 echo $tester;
 // will return: {"first_name":"Jo","last_name":"Doe"}
 ```
+
+### DocBlock Generator
+
+Example:
+```sh
+php scripts/entityDocGenerator.php  --class="\PayBreak\Foundation\Decision\Risk"
+```
