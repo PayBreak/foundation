@@ -121,25 +121,21 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
             throw new ProcessingException('Unavailable condition type.');
         }
 
-        switch ($condition) {
-            case ConditionInterface::CONDITION_EQUAL:
-                return new EqualCondition();
-            case ConditionInterface::CONDITION_NOT_EQUAL:
-                return new NotEqualCondition();
-            case ConditionInterface::CONDITION_LESS_THAN:
-                return new LessThanCondition();
-            case ConditionInterface::CONDITION_GREATER_THAN:
-                return new GreaterThanCondition();
-            case ConditionInterface::CONDITION_LESS_THAN_OR_EQUAL_TO:
-                return new LessThanOrEqualCondition();
-            case ConditionInterface::CONDITION_GREATER_THAN_OR_EQUAL_TO:
-                return new GreaterThanOrEqualCondition();
-            case ConditionInterface::CONDITION_IF_EMPTY:
-                return new IfEmptyCondition();
-            case ConditionInterface::CONDITION_IF_NOT_EXISTS:
-                return new IfNotExistsCondition();
-            case ConditionInterface::CONDITION_IS_DEFAULT:
-                return new IsDefaultCondition();
+        $ar = [
+            ConditionInterface::CONDITION_EQUAL => EqualCondition::class,
+            ConditionInterface::CONDITION_NOT_EQUAL => NotEqualCondition::class,
+            ConditionInterface::CONDITION_LESS_THAN => LessThanCondition::class,
+            ConditionInterface::CONDITION_GREATER_THAN => GreaterThanCondition::class,
+            ConditionInterface::CONDITION_LESS_THAN_OR_EQUAL_TO => LessThanOrEqualCondition::class,
+            ConditionInterface::CONDITION_GREATER_THAN_OR_EQUAL_TO => GreaterThanOrEqualCondition::class,
+            ConditionInterface::CONDITION_IF_EMPTY => IfEmptyCondition::class,
+            ConditionInterface::CONDITION_IF_NOT_EXISTS => IfNotExistsCondition::class,
+            ConditionInterface::CONDITION_IS_DEFAULT => IsDefaultCondition::class,
+        ];
+
+        if (array_key_exists($condition, $ar)) {
+
+            return new $ar[$condition]();
         }
 
         throw new ProcessingException('Unsupported condition type.');
