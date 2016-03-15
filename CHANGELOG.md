@@ -2,6 +2,7 @@
 - Added `AbstractEntity` support for `class[]`
 - Added `NameHelper`
 - Improved `trigger_error` and `EntityPropertyTrait`
+- Doc bloc generator for `AbstractEntity`
 
 # v0.8.0
 2016-01-20
