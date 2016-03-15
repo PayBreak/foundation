@@ -32,14 +32,14 @@ class NameHelper
     /**
      * @author WN
      * @param string $string
-     * @param bool $firstLow
+     * @param bool $firstLowercase
      * @return string
      */
-    public static function snakeToCamel($string, $firstLow = false)
+    public static function snakeToCamel($string, $firstLowercase = false)
     {
-        $rtn = str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+        $rtn = str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($string))));
 
-        if ($firstLow) {
+        if ($firstLowercase) {
             $rtn[0] = strtolower($rtn[0]);
         }
 

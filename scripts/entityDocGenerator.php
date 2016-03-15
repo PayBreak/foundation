@@ -27,7 +27,7 @@ if (strpos($argv[1], '--class=') !== false) {
         echo "Class doesn't exist \n"; die();
     }
 
-    $ref = new ReflectionClass(\PayBreak\Foundation\Decision\Risk::class);
+    $ref = new ReflectionClass($class);
     $property = $ref->getProperty('properties');
     $property->setAccessible(true);
     $array = $property->getValue(new $class());
@@ -39,6 +39,10 @@ if (strpos($argv[1], '--class=') !== false) {
 foreach ($array as $k => $v) {
     if (is_numeric($v)) {
         $v = $names[$v];
+    }
+    if (is_numeric($k)) {
+        $k = $v;
+        $v = 'mixed';
     }
     echo(' * @method $this set' . NameHelper::snakeToCamel($k) . '(' . $v . ' $' . NameHelper::snakeToCamel($k, true) . ')' . "\n");
     echo(' * @method ' . $v . '|null get' . NameHelper::snakeToCamel($k) . '()' . "\n");
