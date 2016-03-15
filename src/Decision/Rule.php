@@ -30,7 +30,7 @@ use PayBreak\Foundation\Decision\Condition\ConditionInterface;
  * @method int|null getType()
  * @method $this setConditions(array $conditions)
  * @method $this addConditions(ConditionInterface $conditions)
- * @method ConditionInterface[]|null getConditions()
+ * @method ConditionInterface[] getConditions()
  *
  * @package PayBreak\Foundation\Decision
  */

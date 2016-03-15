@@ -43,7 +43,7 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
      */
     public function setValue(Value $value)
     {
-        return parent::setValue($value);
+        return $this->__call('setValue', [$value]);
     }
 
     /**

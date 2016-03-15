@@ -260,7 +260,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
     {
         $entity = DummyEntity::make([]);
 
-        $this->assertNull($entity->getOne());
+        $this->assertNull($entity->getTwo());
 
         $entity->setFour(null);
 

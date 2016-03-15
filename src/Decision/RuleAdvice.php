@@ -29,10 +29,10 @@ use PayBreak\Foundation\Decision\Condition\ConditionInterface;
  * @method ConditionInterface|null getCondition()
  * @method $this addExceptions(string $exception)
  * @method $this setExceptions(array $exception)
- * @method array|null getExceptions()
+ * @method array getExceptions()
  * @method $this addMeta(string $exception)
  * @method $this setMeta(array $exception)
- * @method array|null getMeta()
+ * @method array getMeta()
  * @package PayBreak\Foundation\Decision
  */
 class RuleAdvice extends AbstractEntity

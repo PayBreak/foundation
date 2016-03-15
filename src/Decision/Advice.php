@@ -24,12 +24,12 @@ use PayBreak\Foundation\AbstractEntity;
  * @method float|null getRisk()
  * @method $this setAdvices(array $advices)
  * @method $this addAdvices(RuleAdvice $advices)
- * @method RuleAdvice[]|null getAdvices()
+ * @method RuleAdvice[] getAdvices()
  * @method $this addExceptions(string $exception)
  * @method $this setExceptions(array $exception)
- * @method array|null getExceptions()
+ * @method array getExceptions()
  * @method $this setMeta(array $meta)
- * @method array|null getMeta()
+ * @method array getMeta()
  * @package PayBreak\Foundation\Decision
  */
 class Advice extends AbstractEntity

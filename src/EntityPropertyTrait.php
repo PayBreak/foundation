@@ -99,6 +99,13 @@ trait EntityPropertyTrait
         return $ar;
     }
 
+    /**
+     * @author WN
+     * @param $array
+     * @param $value
+     * @param array $arguments
+     * @return array
+     */
     private function addArrayField(&$array, $value, array $arguments)
     {
         if (isset($arguments[1])) {
@@ -108,6 +115,16 @@ trait EntityPropertyTrait
 
         $array[] = $value;
         return $array;
+    }
+
+    /**
+     * @author WN
+     * @param $type
+     * @return bool
+     */
+    private function isArray($type)
+    {
+        return $type == AbstractEntity::TYPE_ARRAY || $this->isArrayOfObjects($type);
     }
 
     /**

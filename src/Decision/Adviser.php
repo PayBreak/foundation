@@ -22,7 +22,7 @@ use PayBreak\Foundation\AbstractEntity;
  * @method string|null getName()
  * @method $this setRules(array $rules)
  * @method $this addRules(Rule $rules)
- * @method Rule[]|null getRules()
+ * @method Rule[] getRules()
 
  * @package PayBreak\Foundation\Decision
  */

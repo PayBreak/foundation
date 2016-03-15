@@ -38,7 +38,7 @@ class LessThanCondition extends AbstractCondition implements ConditionInterface
      */
     public function checkCondition(Value $value)
     {
-        if ($this->compareType($value) == false) {
+        if ($this->compareType($value) === false) {
             return false;
         }
 

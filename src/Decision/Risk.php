@@ -18,7 +18,7 @@ use PayBreak\Foundation\AbstractEntity;
  * @author WN
  * @method float|null getRisk()
  * @method $this setMeta(array $meta)
- * @method array|null getMeta()
+ * @method array getMeta()
  * @method $this setAdviserName(string $adviserName)
  * @method string|null getAdviserName()
  * @method $this setAdviserCode(string $adviserCode)
@@ -52,7 +52,7 @@ class Risk extends AbstractEntity
             throw new \InvalidArgumentException('Risk must be numeric.');
         }
 
-        parent::setRisk(self::normalize($risk));
+        $this->__call('setRisk', [self::normalize($risk)]);
         return $this;
     }
 

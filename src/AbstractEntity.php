@@ -233,6 +233,10 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
             return $this->data[$property];
         }
 
+        if (array_key_exists($property, $this->properties) && $this->isArray($this->properties[$property])) {
+            return [];
+        }
+
         return null;
     }
 
