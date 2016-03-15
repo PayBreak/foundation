@@ -37,7 +37,7 @@ class NameHelper
      */
     public static function snakeToCamel($string, $firstLow = false)
     {
-        $rtn = str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+        $rtn = str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($string))));
 
         if ($firstLow) {
             $rtn[0] = strtolower($rtn[0]);
