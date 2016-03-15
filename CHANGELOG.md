@@ -1,3 +1,15 @@
+## Features
+- Added `AbstractEntity` support for `class[]`
+- Added `NameHelper`
+- Improved `trigger_error` and `EntityPropertyTrait`
+- Doc bloc generator for `AbstractEntity`
+- Added `Data` group with `Value`
+- Added `Decision` stack
+    - `Condition`, `Rule`, `Adviser`
+    - `RuleAdvice`, `Advice`
+    - `DataSource` concept with aggregator
+    - Specific `Exceptions`
+
 # v0.8.0
 2016-01-20
 

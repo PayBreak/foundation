@@ -13,10 +13,32 @@ Methods name are build this way `getPropertyName()`. Camel case property name wi
 **Input** Getters are taking no params.  
 **Return** Getters are returning value of property or `null` if not set.
 
+### Adders
+Methods name are build this way `addPropertyName()`. Camel case property name with prefix *add*.  
+**Input** Adders are taking one param which is value of property to be added.   
+**Return** Adders must return instance of object itself. So they could be chained.
+
+Adders *have* to be an array of objects
+
 ### To Array
 `EntityInterface` requires to implement `toArray()` method which will be returning an `array` representation of *entity* properties.
 
 ## Abstract Entity
+
+### Types
+
+```
+const TYPE_ARRAY = 1;
+const TYPE_BOOL = 2;
+const TYPE_INT = 4;
+const TYPE_STRING = 8;
+const TYPE_FLOAT = 16;
+# const TYPE_OBJECT = 32;
+```
+
+#### Object Type
+
+Property type can be defined as specific `class` and `class[]` as well.
 
 ### Implementation
 
@@ -33,7 +55,7 @@ class Person extends \PayBreak\Foundation\AbstractEntity
 {
     protected $properties = [
         'first_name',
-        'last_name',
+        'last_name' => self::TYPE_STRING,
     ];
 }
 ```
@@ -59,4 +81,26 @@ AbstractEntity has `__toString()` method implemented. It'll return *JSON* string
 ```php
 echo $tester;
 // will return: {"first_name":"Jo","last_name":"Doe"}
+```
+
+### toJson
+
+AbstractEntity has `toJson` method implemented. This will return a json object of the `toArray()` output.
+
+```php
+echo $tester->toJson(1000);
+```
+
+```json
+{
+    "first_name":"Jo",
+    "last_name":"Doe"
+}
+```
+
+### DocBlock Generator
+
+Example:
+```sh
+php scripts/entityDocGenerator.php  --class="\PayBreak\Foundation\Decision\Risk"
 ```
