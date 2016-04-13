@@ -40,6 +40,45 @@ const TYPE_FLOAT = 16;
 
 Property type can be defined as specific `class` and `class[]` as well.
 
+#### `class[]` Property usage
+
+When specifying a property as an object array type, you can use the addFieldName method to append to the internal array of this property.
+
+```php
+/**
+ * Person Entity
+ *
+ * @method $this setFirstName(string $firstName)
+ * @method string getFirstName()
+ * @method $this setLastName(string $lastName)
+ * @method string getLastName()
+ * @method $this setAddresses(Address $address)
+ * @method $this addAddresses(Address $address)
+ * @method Address[] getAddresses()
+ */
+class Person extends \PayBreak\Foundation\AbstractEntity
+{
+    protected $properties = [
+        'first_name',
+        'last_name' => self::TYPE_STRING,
+        'addresses'   => `Address[]`
+    ];
+}
+```
+
+You may then add addresses by passing an `address` object into the `addAddresses()` method:
+
+```php
+$person = new Person();
+$person->addAddresses(new Address);
+```
+
+and retrieve addresses by calling `getAddresses()`
+
+```php
+$addressArray = $person->getAddresses();
+```
+
 ### Implementation
 
 ```php
