@@ -1,3 +1,6 @@
+# v0.9.0
+2016-03-15
+
 ## Features
 - Added `AbstractEntity` support for `class[]`
 - Added `NameHelper`
