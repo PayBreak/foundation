@@ -1,3 +1,12 @@
+## Features
+- New concepts:
+    - `Indexable`
+    - `Persistable`
+- Repository concepts
+    - `ReadRepository`
+    - `Repository`
+    - `WriteRepository`
+
 # v0.9.0
 2016-03-15
 
