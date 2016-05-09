@@ -16,6 +16,6 @@ namespace PayBreak\Foundation\Contracts;
  * @author  WN
  * @package PayBreak\Foundation
  */
-interface RecordableEntity extends IndexableEntity, Makeable
+interface Persistable extends Indexable, Makeable
 {
 }

@@ -26,9 +26,9 @@ interface WriteRepository
      * Returned RecordableEntity will have unique index value
      *
      * @author WN
-     * @param RecordableEntity $entity
-     * @return RecordableEntity
+     * @param Persistable $entity
+     * @return Persistable
      * @throws RepositoryException
      */
-    public function write(RecordableEntity $entity);
+    public function write(Persistable $entity);
 }

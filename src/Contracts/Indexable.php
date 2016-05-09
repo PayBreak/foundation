@@ -11,12 +11,12 @@
 namespace PayBreak\Foundation\Contracts;
 
 /**
- * Indexable Entity Interface
+ * Indexable Interface
  *
  * @author  WN
  * @package PayBreak\Foundation
  */
-interface IndexableEntity extends Entity
+interface Indexable extends Entity
 {
     /**
      * Entity Identifier
@@ -25,4 +25,11 @@ interface IndexableEntity extends Entity
      * @return int|string|null
      */
     public function getId();
+
+    /**
+     * @author WN
+     * @param int|string $id
+     * @return $this
+     */
+    public function setId($id);
 }

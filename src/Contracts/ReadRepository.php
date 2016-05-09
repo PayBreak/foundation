@@ -28,7 +28,7 @@ interface ReadRepository
      *
      * @author WN
      * @param int|string $id
-     * @return RecordableEntity
+     * @return Persistable
      * @throws NotFoundException if Entity is not found
      * @throws RepositoryException for any other case
      */
