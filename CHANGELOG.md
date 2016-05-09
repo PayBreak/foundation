@@ -1,3 +1,6 @@
+# v0.10.0
+2016-05-09
+
 ## Features
 - New concepts:
     - `Indexable`
