@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the PayBreak\Foundation package.
+ *
+ * (c) PayBreak <dev@paybreak.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
 
 namespace PayBreak\Foundation\Properties;
 
@@ -11,7 +19,7 @@ use PayBreak\Foundation\Exceptions\ValidationException;
  * @author WN
  * @package PayBreak\Foundation\Properties
  */
-class Bitwise // implements Property
+class Bitwise
 {
     private $value;
 
@@ -48,11 +56,11 @@ class Bitwise // implements Property
     /**
      * @author WN
      * @param int $value
-     * @return int
+     * @return bool
      */
     public function contains($value)
     {
-        return $this->value & $value;
+        return ($this->value & $value) == $value;
     }
 
     /**
@@ -132,7 +140,7 @@ class Bitwise // implements Property
         while ($value > 0) {
             $x = pow(2, floor(log($value, 2)));
 
-            $rtn[] = $x;
+            $rtn[] = (int) $x;
 
             $value -= $x;
         }
