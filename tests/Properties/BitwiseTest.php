@@ -95,6 +95,7 @@ class BitwiseTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(Bitwise::isSimpleBitwise(4));
         $this->assertFalse(Bitwise::isSimpleBitwise(5));
         $this->assertFalse(Bitwise::isSimpleBitwise(9));
+        $this->assertTrue(Bitwise::isSimpleBitwise(0));
     }
 
     public function testValidateSimpleBitwise()
