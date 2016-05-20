@@ -1,3 +1,6 @@
+## Features
+- Added the `Bitwise` property
+
 # v0.10.0
 2016-05-09
 
