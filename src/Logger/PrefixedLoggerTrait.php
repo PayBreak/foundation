@@ -25,7 +25,7 @@ trait PrefixedLoggerTrait
     /**
      * @return string
      */
-    abstract protected function getPrefix();
+    abstract protected function getLogPrefix();
 
     /**
      * @author WN
@@ -36,6 +36,6 @@ trait PrefixedLoggerTrait
      */
     protected function log($level, $message, $context)
     {
-        return $this->parentLog($level, $this->getPrefix() . $message, $context);
+        return $this->parentLog($level, $this->getLogPrefix() . $message, $context);
     }
 }

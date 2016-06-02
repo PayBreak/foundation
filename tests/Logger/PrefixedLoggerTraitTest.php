@@ -33,7 +33,13 @@ class PrefixedLoggerTraitTest extends \PHPUnit_Framework_TestCase
         return $this->logger;
     }
 
-    protected function getPrefix()
+    /**
+     * Get the log message prefix/tag
+     *
+     * @author SL
+     * @return string
+     */
+    protected function getLogPrefix()
     {
         return 'PFX: ';
     }
