@@ -1,3 +1,6 @@
+## Features
+- Added `PrefixedLoggerTrait`
+
 # v0.11.0
 2016-05-20
 
