@@ -122,7 +122,7 @@ trait PsrLoggerTrait
      * @param array $context
      * @return null
      */
-    private function log($level, $message, $context)
+    protected function log($level, $message, $context)
     {
         if ($this->getLogger() instanceof LoggerInterface) {
 
