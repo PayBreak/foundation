@@ -59,10 +59,10 @@ trait EntityPropertyTrait
      */
     private function classExists($class)
     {
-        if (class_exists($class)) {
+        if (class_exists($class) || interface_exists($class)) {
             return true;
         }
-        throw new Exception('Non existing class');
+        throw new Exception('Non existing class or interface [' . $class . ']');
     }
 
     /**
