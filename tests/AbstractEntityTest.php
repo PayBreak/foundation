@@ -357,6 +357,26 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
 
         $entity->addTwo(123);
     }
+
+    public function testInterfaceAcceptance()
+    {
+        $entity = new DummyInterfaceAcceptor();
+
+        $entity->setInterface(new ExtendingInterface());
+
+        $this->assertInstanceOf(ExtendingInterface::class, $entity->getInterface());
+    }
+
+    public function testInterfaceAcceptanceMultiple()
+    {
+        $entity = new DummyInterfaceAcceptor();
+
+        $entity->addMultipleInterfaces(new ExtendingInterface());
+        $entity->addMultipleInterfaces(new ExtendingInterfaceTwo());
+
+        $this->assertInstanceOf(ExtendingInterface::class, $entity->getMultipleInterfaces()[0]);
+        $this->assertInstanceOf(ExtendingInterfaceTwo::class, $entity->getMultipleInterfaces()[1]);
+    }
 }
 
 /**
@@ -390,4 +410,34 @@ class DummyEntity extends AbstractEntity
         'obj_two' => 'Tests\DummyEntitySecond',
         'obj_arr' => 'Tests\DummyEntity[]',
     ];
+}
+
+/**
+ * @method $this setInterface(DummyInterface $interface)
+ * @method DummyInterface|null getInterface()
+ * @method $this setMultipleInterfaces(DummyInterface $interface)
+ * @method $this addMultipleInterfaces(DummyInterface $interface)
+ * @method DummyInterface[]|null getMultipleInterfaces()
+ */
+class DummyInterfaceAcceptor extends AbstractEntity
+{
+    protected $properties = [
+        'interface' => 'Tests\DummyInterface',
+        'multiple_interfaces' => 'Tests\DummyInterface[]'
+    ];
+}
+
+interface DummyInterface
+{
+
+}
+
+class ExtendingInterface implements DummyInterface
+{
+
+}
+
+class ExtendingInterfaceTwo implements DummyInterface
+{
+
 }

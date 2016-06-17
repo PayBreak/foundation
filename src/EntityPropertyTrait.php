@@ -34,7 +34,7 @@ trait EntityPropertyTrait
      */
     private function processObjectType($value, $class)
     {
-        $this->classExists($class);
+        $this->isClassOrInterface($class);
 
         if (is_array($value) && is_subclass_of($class, Makeable::class)) {
 
@@ -57,12 +57,12 @@ trait EntityPropertyTrait
      * @return bool
      * @throws Exception
      */
-    private function classExists($class)
+    private function isClassOrInterface($class)
     {
-        if (class_exists($class)) {
+        if (class_exists($class) || interface_exists($class)) {
             return true;
         }
-        throw new Exception('Non existing class');
+        throw new Exception('Non existing class or interface [' . $class . ']');
     }
 
     /**
