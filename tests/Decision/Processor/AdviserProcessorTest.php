@@ -28,6 +28,15 @@ use PayBreak\Foundation\Data\Value;
 class AdviserProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @author SL
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        date_default_timezone_set('UTC');
+    }
+
+    /**
      * @author EB
      */
     public function testConstruct()
