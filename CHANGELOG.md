@@ -1,5 +1,6 @@
 ## Features
 - Added `PrefixedLoggerTrait`
+- Added *interface* support to `AbstractEntity`
 
 # v0.11.0
 2016-05-20
