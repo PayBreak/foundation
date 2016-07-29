@@ -87,6 +87,11 @@ class BitwiseTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(9, $property->remove(4));
         $this->assertSame(9, $property->remove(2));
         $this->assertSame(8, $property->remove(1));
+
+        $property = Bitwise::make(10);
+        $this->assertSame(10, $property->remove(4));
+        $this->assertSame(2, $property->remove(12));
+        $this->assertSame(0, $property->remove(2));
     }
 
     public function testIsSimpleBitwise()
