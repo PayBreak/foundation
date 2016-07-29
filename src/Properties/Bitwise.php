@@ -80,12 +80,7 @@ class Bitwise
      */
     public function remove($value)
     {
-        if ($this->contains($value)) {
-
-            return $this->value = $this->value - $value;
-        }
-
-        return $this->value;
+        return $this->value = $this->value & ~$value;
     }
 
     /**
