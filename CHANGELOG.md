@@ -1,3 +1,9 @@
+# v0.12.1
+2016-08-01
+
+## Bug Fixes
+- Fixed `Bitwise::remove()`
+
 # v0.12.0
 2016-06-17
 
