@@ -74,6 +74,8 @@ class Bitwise
     }
 
     /**
+     * Remove values from a number
+     * 
      * @author WN
      * @param int $value
      * @return int
