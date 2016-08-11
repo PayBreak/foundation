@@ -1,3 +1,9 @@
+# v0.13.0
+2016-08-11
+
+## Features
+- Added `ApmService` Contract
+
 # v0.12.1
 2016-08-01
 
