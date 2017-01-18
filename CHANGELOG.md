@@ -1,3 +1,9 @@
+# v0.14.0
+2017-01-18
+
+## Bug Fixes
+- Wrong file name for `NotFoundException` to meet PSR-4 ( #13 )  
+
 # v0.13.0
 2016-08-11
 
