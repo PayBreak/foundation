@@ -38,7 +38,6 @@ class IfEmptyCondition extends AbstractCondition implements ConditionInterface
     public function checkCondition(Value $value)
     {
         if ($value->getType() == Value::VALUE_EMPTY) {
-
             return true;
         }
 

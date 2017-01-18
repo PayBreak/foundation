@@ -41,7 +41,6 @@ class EqualCondition extends AbstractCondition implements ConditionInterface
     public function checkCondition(Value $value)
     {
         if ($this->compareType($value) && $value->getValue() == $this->getValue()->getValue()) {
-
             return true;
         }
 

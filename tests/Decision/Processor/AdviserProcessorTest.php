@@ -9,6 +9,7 @@
  */
 
 namespace Tests\Decision\Processor;
+
 use PayBreak\Foundation\Decision\Adviser;
 use PayBreak\Foundation\Decision\Condition\ConditionInterface;
 use PayBreak\Foundation\Decision\DataSourceInterface;

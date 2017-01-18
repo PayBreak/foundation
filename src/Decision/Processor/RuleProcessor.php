@@ -36,18 +36,13 @@ class RuleProcessor implements RuleProcessorInterface
         $advice = RuleAdvice::make(['rule' => $rule, 'value' => $value, 'risk' => $noMatchRisk]);
 
         foreach ($rule->getConditions() as $condition) {
-
             try {
-
                 if ($condition->checkCondition($value)) {
-
                     $advice->setRisk($condition->getRisk());
                     $advice->setCondition($condition);
                     break;
                 }
-
             } catch (ProcessingException $e) {
-
                 $advice->addExceptions('Processing condition [' . $condition->getValue() . ']: ' . $e->getMessage());
             }
         }

@@ -48,7 +48,6 @@ class Risk extends AbstractEntity
     public function setRisk($risk)
     {
         if (!is_numeric($risk)) {
-
             throw new \InvalidArgumentException('Risk must be numeric.');
         }
 

@@ -17,14 +17,16 @@ $names = [
 ];
 
 if (count($argv) !== 2) {
-    echo 'Argument not supplied!' . "\n"; die();
+    echo 'Argument not supplied!' . "\n";
+    die();
 }
 
 if (strpos($argv[1], '--class=') !== false) {
     $class = (string) str_replace('--class=', '', $argv[1]);
 
     if (!class_exists($class)) {
-        echo "Class doesn't exist \n"; die();
+        echo "Class doesn't exist \n";
+        die();
     }
 
     $ref = new ReflectionClass($class);
