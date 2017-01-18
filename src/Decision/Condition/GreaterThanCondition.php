@@ -43,12 +43,10 @@ class GreaterThanCondition extends AbstractCondition implements ConditionInterfa
         }
 
         if (!in_array($value->getType(), [Value::VALUE_INT, Value::VALUE_FLOAT])) {
-
             throw new ProcessingException('This condition can be performed only over int and float types.');
         }
 
         if ($this->compareType($value) && $value->getValue() > $this->getValue()->getValue()) {
-
             return true;
         }
 

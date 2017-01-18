@@ -52,9 +52,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         $entity = new static();
 
         foreach ($components as $k => $v) {
-
             if ($entity->isPropertyAllowed($k)) {
-
                 $entity->{'set' . NameHelper::snakeToCamel($k)}($v);
             }
         }
@@ -74,7 +72,6 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         $property = NameHelper::camelToSnake(substr($name, 3));
 
         if ($this->isPropertyAllowed($property)) {
-
             switch ($action) {
                 case 'set':
                     return $this->set($property, $arguments);
@@ -111,9 +108,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         $rtn = [];
 
         foreach ($data as $k => $v) {
-
             if ($recursively) {
-
                 if ($v instanceof Arrayable) {
                     $rtn[$k] = $v->toArray(true);
                     continue;
@@ -176,7 +171,6 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         $this->checkArguments($arguments, $property);
 
         if ($arguments[0] === null) {
-
             $this->data[$property] = null;
             return $this;
         }
@@ -204,7 +198,6 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         }
 
         if ($arguments[0] === null) {
-
             return $this;
         }
 
@@ -229,7 +222,6 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
     private function get($property)
     {
         if (array_key_exists($property, $this->data)) {
-
             return $this->data[$property];
         }
 
@@ -253,12 +245,10 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
         if (array_key_exists($property, $this->properties)) {
             $type = $this->properties[$property];
             if ($this->isInternalType($type)) {
-
                 return $this->processInternalType($value, $type);
             }
 
             if ($this->isArrayOfObjects($type) && is_array($value)) {
-
                 return $this->processArrayOfObj($value, $type);
             }
 
@@ -288,7 +278,6 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
     private function processInternalType($value, $type)
     {
         if ($this->validateInternalType($value, $type)) {
-
             return $value;
         }
 

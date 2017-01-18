@@ -84,21 +84,18 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
     public static function make(array $components)
     {
         if (!array_key_exists('condition', $components)) {
-
             throw new Exception('ConditionInterface component is required.');
         }
 
         $entity = self::initializeCondition($components['condition']);
 
         if (!array_key_exists('risk', $components)) {
-
             throw new Exception('Risk component is required.');
         }
 
         $entity->setRisk($components['risk']);
 
         if (array_key_exists('value', $components)) {
-
             if (is_array($components['value'])) {
                 $components['value'] = Value::make($components['value']);
             }
@@ -117,7 +114,6 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
     private static function initializeCondition($condition)
     {
         if (!in_array($condition, AbstractCondition::availableTypes())) {
-
             throw new ProcessingException('Unavailable condition type.');
         }
 
@@ -134,7 +130,6 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
         ];
 
         if (array_key_exists($condition, $ar)) {
-
             return new $ar[$condition]();
         }
 
@@ -149,14 +144,11 @@ abstract class AbstractCondition extends AbstractEntity implements ConditionInte
     protected function compareType(Value $value)
     {
         if (!($value->getType() & Value::VALUE_EXPECTED)) {
-
             return false;
         }
 
         if ($this->getValue() instanceof Value) {
-
             if ($this->getValue()->getType() === $value->getType()) {
-
                 return true;
             }
 

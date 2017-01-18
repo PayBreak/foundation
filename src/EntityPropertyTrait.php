@@ -37,12 +37,10 @@ trait EntityPropertyTrait
         $this->isClassOrInterface($class);
 
         if (is_array($value) && is_subclass_of($class, Makeable::class)) {
-
             return $class::make($value);
         }
 
         if (is_a($value, $class)) {
-
             return $value;
         }
 
@@ -73,7 +71,6 @@ trait EntityPropertyTrait
     private function checkType($value)
     {
         if (is_object($value)) {
-
             return get_class($value);
         }
 

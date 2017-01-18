@@ -51,7 +51,7 @@ class AdviserProcessor implements AdviserProcessorInterface
             }
         }
 
-        if(count($risk) == 0) {
+        if (count($risk) == 0) {
             $risk[] = $defaultRisk;
         }
 
@@ -78,9 +78,7 @@ class AdviserProcessor implements AdviserProcessorInterface
                 $risk[] = $ruleAdvice->getRisk();
             }
             $advice->addAdvices($ruleAdvice);
-
         } catch (ProcessingException $e) {
-
             $advice->addExceptions('Processing rule [' . $rule->getDescription() . '] issue:' . $e->getMessage());
         }
 

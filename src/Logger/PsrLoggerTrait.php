@@ -10,7 +10,6 @@
 
 namespace PayBreak\Foundation\Logger;
 
-
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -125,7 +124,6 @@ trait PsrLoggerTrait
     protected function log($level, $message, $context)
     {
         if ($this->getLogger() instanceof LoggerInterface) {
-
             $this->getLogger()->log($level, $message, $context);
         }
 

@@ -41,14 +41,11 @@ class IsDefaultCondition extends AbstractCondition implements ConditionInterface
     public function checkCondition(Value $value)
     {
         if ($this->getValue() instanceof Value) {
-
             if ($value->getType() != Value::VALUE_DEFAULT) {
-
                 throw new ProcessingException('Value is not default type');
             }
 
             if ($value->getValue() == $this->getValue()->getValue()) {
-
                 return true;
             }
 

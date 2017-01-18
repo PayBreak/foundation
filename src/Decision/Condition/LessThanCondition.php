@@ -43,12 +43,10 @@ class LessThanCondition extends AbstractCondition implements ConditionInterface
         }
 
         if (!in_array($value->getType(), [Value::VALUE_INT, Value::VALUE_FLOAT])) {
-
             throw new ProcessingException('This condition can be performed only over int and float types.');
         }
 
         if ($value->getValue() < $this->getValue()->getValue()) {
-
             return true;
         }
 

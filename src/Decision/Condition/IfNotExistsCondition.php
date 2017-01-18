@@ -38,7 +38,6 @@ class IfNotExistsCondition extends AbstractCondition implements ConditionInterfa
     public function checkCondition(Value $value)
     {
         if ($value->getType() == Value::VALUE_NON_EXISTS) {
-
             return true;
         }
 

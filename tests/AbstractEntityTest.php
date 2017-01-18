@@ -429,15 +429,12 @@ class DummyInterfaceAcceptor extends AbstractEntity
 
 interface DummyInterface
 {
-
 }
 
 class ExtendingInterface implements DummyInterface
 {
-
 }
 
 class ExtendingInterfaceTwo implements DummyInterface
 {
-
 }
