@@ -43,7 +43,6 @@ trait ArrayAccessTrait
     public function offsetGet($offset)
     {
         if ($this->offsetExists($offset)) {
-
             return $this->data[$offset];
         }
 
