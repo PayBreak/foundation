@@ -11,6 +11,7 @@
 namespace PayBreak\Foundation\Traits;
 
 use PayBreak\Foundation\Exception;
+use PayBreak\Foundation\Exceptions\InvalidArgumentException;
 
 /**
  * Array Access Trait
@@ -57,6 +58,8 @@ trait ArrayAccessTrait
      */
     public function offsetSet($offset, $value)
     {
+        $this->offsetValidate($offset);
+        $this->valueValidate($value);
         if ($offset == '' && !is_numeric($offset)) {
             $offset = count($this->data);
         }
@@ -72,4 +75,20 @@ trait ArrayAccessTrait
     {
         unset($this->data[$offset]);
     }
+
+    /**
+     * @author WN
+     * @param mixed $offset
+     * @return bool
+     * @throws Exception
+     */
+    abstract protected function offsetValidate($offset);
+
+    /**
+     * @author WN
+     * @param $value
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    abstract protected function valueValidate($value);
 }

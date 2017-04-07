@@ -11,7 +11,7 @@
 namespace Tests\Traits;
 
 use PayBreak\Foundation\Exceptions\InvalidArgumentException;
-use PayBreak\Foundation\Traits\IndexedArrayAccessTrait;
+use PayBreak\Foundation\Traits\ArrayAccessTrait;
 
 /**
  * ArrayAccessTrait Test
@@ -43,10 +43,22 @@ class IndexedArrayAccessTraitTest extends \PHPUnit_Framework_TestCase
 
 class IndexedArrayAccess implements \ArrayAccess
 {
-    use IndexedArrayAccessTrait;
+    use ArrayAccessTrait;
 
     public function __construct(array $data)
     {
         $this->data = $data;
+    }
+
+    protected function offsetValidate($offset)
+    {
+        if (!is_integer($offset) && $offset != '') {
+            throw new InvalidArgumentException('Offset must be integer type.');
+        }
+    }
+
+    protected function valueValidate($value)
+    {
+        return true;
     }
 }

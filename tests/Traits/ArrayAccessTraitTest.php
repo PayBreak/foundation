@@ -77,4 +77,14 @@ class ArrayAccess implements \ArrayAccess
     {
         $this->data = $data;
     }
+
+    protected function offsetValidate($offset)
+    {
+        return true;
+    }
+
+    protected function valueValidate($value)
+    {
+        return true;
+    }
 }
