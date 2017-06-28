@@ -1,3 +1,9 @@
+# v0.15.0
+2017-06-28
+
+## Features
+- Added Bitwise:: makeFromArray(array $data)
+
 # v0.14.0
 2017-01-18
 
