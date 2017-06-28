@@ -46,7 +46,7 @@ class Bitwise
 
     /**
      * @author WN
-     * @param array $value
+     * @param array $data
      * @return Bitwise
      */
     public static function makeFromArray(array $data)
