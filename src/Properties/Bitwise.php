@@ -46,6 +46,16 @@ class Bitwise
 
     /**
      * @author WN
+     * @param array $value
+     * @return Bitwise
+     */
+    public static function makeFromArray(array $data)
+    {
+        return self::make(array_sum($data));
+    }
+
+    /**
+     * @author WN
      * @return int
      */
     public function get()
