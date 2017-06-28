@@ -35,6 +35,13 @@ class BitwiseTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Bitwise::class, Bitwise::make(13));
     }
 
+    public function testMakeFromArray()
+    {
+        $this->assertInstanceOf(Bitwise::class, Bitwise::makeFromArray([]));
+        $this->assertInstanceOf(Bitwise::class, Bitwise::makeFromArray([2]));
+        $this->assertInstanceOf(Bitwise::class, Bitwise::makeFromArray([2, 4]));
+    }
+
     public function testGet()
     {
         $property = new Bitwise();
