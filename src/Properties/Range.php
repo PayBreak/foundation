@@ -11,6 +11,7 @@
 namespace PayBreak\Foundation\Properties;
 
 use PayBreak\Foundation\AbstractEntity;
+use PayBreak\Foundation\Exception;
 use PayBreak\Foundation\Exceptions\InvalidArgumentException;
 
 /**
@@ -48,6 +49,25 @@ class Range extends AbstractEntity
     {
         parent::setMax($max);
         $this->validateRange();
+        return $this;
+    }
+
+    /**
+     * @author WN
+     * @param Range $range
+     * @return $this
+     * @throws Exception
+     */
+    public function intersect(Range $range)
+    {
+        try {
+            $this->setMin(max($this->getMin(), $range->getMin()));
+            $this->setMax(min($this->getMax(), $range->getMax()));
+        } catch (InvalidArgumentException $e) {
+
+            throw new Exception('Cannot find a common part of ranges');
+        }
+
         return $this;
     }
 
