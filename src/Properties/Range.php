@@ -56,8 +56,8 @@ class Range extends AbstractEntity
      */
     private function validateRange()
     {
-        if ($this->getMin() !== NULL &&
-            $this->getMax() !== NULL &&
+        if ($this->getMin() !== null &&
+            $this->getMax() !== null &&
             $this->getMin() > $this->getMax()
         ) {
             throw new InvalidArgumentException('Invalid range values');
