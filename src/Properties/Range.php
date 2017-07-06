@@ -11,6 +11,7 @@
 namespace PayBreak\Foundation\Properties;
 
 use PayBreak\Foundation\AbstractEntity;
+use PayBreak\Foundation\Exceptions\InvalidArgumentException;
 
 /**
  * Range
@@ -26,12 +27,6 @@ class Range extends AbstractEntity
         'max' => self::TYPE_NUMERIC,
     ];
 
-    public function __construct()
-    {
-        parent::setMin(0);
-        parent::setMax(0);
-    }
-
     /**
      * @author WN
      * @param float|int $min
@@ -40,7 +35,7 @@ class Range extends AbstractEntity
     public function setMin($min)
     {
         parent::setMin($min);
-        $this->normalise();
+        $this->validateRange();
         return $this;
     }
 
@@ -52,21 +47,20 @@ class Range extends AbstractEntity
     public function setMax($max)
     {
         parent::setMax($max);
-        $this->normalise();
+        $this->validateRange();
         return $this;
     }
 
     /**
      * @author WN
      */
-    private function normalise()
+    private function validateRange()
     {
-        if ($this->getMin() > $this->getMax()) {
-
-            $ar = $this->toArray();
-
-            parent::setMin($ar['max']);
-            parent::setMax($ar['min']);
+        if ($this->getMin() !== NULL &&
+            $this->getMax() !== NULL &&
+            $this->getMin() > $this->getMax()
+        ) {
+            throw new InvalidArgumentException('Invalid range values');
         }
     }
 }

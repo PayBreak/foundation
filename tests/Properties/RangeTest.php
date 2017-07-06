@@ -10,17 +10,17 @@
 
 namespace Tests\Logger;
 
+use PayBreak\Foundation\Exceptions\InvalidArgumentException;
 use PayBreak\Foundation\Properties\Range;
 
 /**
  * Range Test
  *
  * @author WN
- * @package Tests\Logger
  */
 class RangeTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSet()
+    public function testSetRange()
     {
         $obj = Range::make([]);
 
@@ -29,11 +29,15 @@ class RangeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(5, $obj->getMax());
         $this->assertSame(4, $obj->getMin());
+    }
 
-        $obj->setMax(5);
-        $obj->setMin(6);
+    public function testSetWrongRange()
+    {
+        $obj = Range::make([]);
 
-        $this->assertSame(6, $obj->getMax());
-        $this->assertSame(5, $obj->getMin());
+        $obj->setMax(7);
+
+        $this->setExpectedException(InvalidArgumentException::class, 'Invalid range values');
+        $obj->setMin(10);
     }
 }
