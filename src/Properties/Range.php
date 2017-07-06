@@ -73,6 +73,7 @@ class Range extends AbstractEntity
 
     /**
      * @author WN
+     * @throws InvalidArgumentException
      */
     private function validateRange()
     {
