@@ -64,7 +64,6 @@ class Range extends AbstractEntity
             $this->setMin(max($this->getMin(), $range->getMin()));
             $this->setMax(min($this->getMax(), $range->getMax()));
         } catch (InvalidArgumentException $e) {
-
             throw new Exception('Cannot find a common part of ranges');
         }
 
