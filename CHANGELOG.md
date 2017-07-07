@@ -1,3 +1,10 @@
+# v0.16.0
+2017-07-07
+
+## Features
+- Added *numeric* type to `AbstractEntity`
+- Added `Range`
+
 # v0.15.0
 2017-06-28
 
