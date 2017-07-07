@@ -35,6 +35,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
     const TYPE_STRING = 8;
     const TYPE_FLOAT = 16;
     const TYPE_OBJECT = 32;
+    const TYPE_NUMERIC = 64;
 
     private $data = [];
 
@@ -306,6 +307,8 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
                 return is_bool($value);
             case self::TYPE_FLOAT:
                 return is_float($value);
+            case self::TYPE_NUMERIC:
+                return is_numeric($value);
         }
     }
 
@@ -321,6 +324,7 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
             self::TYPE_STRING => 'string',
             self::TYPE_BOOL => 'bool',
             self::TYPE_FLOAT => 'float',
+            self::TYPE_NUMERIC => 'numeric',
         ];
     }
 }

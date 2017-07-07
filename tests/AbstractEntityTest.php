@@ -232,6 +232,36 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(5.5, $entity->getFive());
     }
 
+    public function testNumericProperty()
+    {
+        $entity = new DummyEntity();
+
+        $this->assertInstanceOf('Tests\DummyEntity', $entity->setSix(5.5));
+        $this->assertInstanceOf('Tests\DummyEntity', $entity->setSix(5));
+    }
+
+    public function testInvalidNumericProperty()
+    {
+        $entity = new DummyEntity();
+
+        $this->setExpectedException(
+            'PayBreak\Foundation\Exceptions\InvalidArgumentException');
+
+        $entity->setSix('true');
+    }
+
+    public function testGetNumericProperty()
+    {
+        $entity = new DummyEntity();
+        $entity->setSix(5.0);
+
+        $this->assertSame(5.0, $entity->getSix());
+
+        $entity->setSix(5);
+
+        $this->assertSame(5, $entity->getSix());
+    }
+
     public function testArrayProperty()
     {
         $entity = new DummyEntity();
@@ -395,6 +425,8 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
  * @method $this setArrObj(array $ar)
  * @method $this addObjArr(DummyEntity $obj)
  * @method DummyEntity[]|null getObjArr()
+ * @method $this setSix(float|int $five)
+ * @method float|int|null getSix()
  */
 class DummyEntity extends AbstractEntity
 {
@@ -409,6 +441,7 @@ class DummyEntity extends AbstractEntity
         'obj' => 'Tests\DummyEntity',
         'obj_two' => 'Tests\DummyEntitySecond',
         'obj_arr' => 'Tests\DummyEntity[]',
+        'six' => self::TYPE_NUMERIC,
     ];
 }
 
