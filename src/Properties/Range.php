@@ -80,7 +80,9 @@ class Range extends AbstractEntity
             $this->getMax() !== null &&
             $this->getMin() > $this->getMax()
         ) {
-            throw new InvalidArgumentException('Invalid range values');
+            throw new InvalidArgumentException(
+                'Invalid range values: min:[' . $this->getMin() . '] max:[' . $this->getMax() . ']'
+            );
         }
     }
 }
