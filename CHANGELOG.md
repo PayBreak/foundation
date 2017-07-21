@@ -1,3 +1,9 @@
+# v0.16.1
+2017-07-21
+
+## Bug Fixes 
+- Improved `Exception` message in `Range::validateRange()`
+
 # v0.16.0
 2017-07-07
 
