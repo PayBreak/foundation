@@ -143,4 +143,24 @@ trait EntityPropertyTrait
     {
         return (string) str_replace('[]', '', $type);
     }
+
+    /**
+     * @author WN
+     * @param array $data
+     * @return array
+     */
+    private function cloneArray(array $data)
+    {
+        foreach ($data as $k => $v) {
+            if (is_object($v)) {
+                $data[$k] = clone $v;
+            }
+
+            if (is_array($v)) {
+                $data[$k] = $this->cloneArray($v);
+            }
+        }
+
+        return $data;
+    }
 }

@@ -163,6 +163,14 @@ abstract class AbstractEntity implements Entity, Makeable, Jsonable
 
     /**
      * @author WN
+     */
+    public function __clone()
+    {
+        $this->data = $this->cloneArray($this->data);
+    }
+
+    /**
+     * @author WN
      * @param string $property
      * @param array $arguments
      * @return $this
