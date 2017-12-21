@@ -1,3 +1,9 @@
+# v0.17.0
+2017-12-21
+
+## Features
+- `AbstractEntity` clone handling for object properties
+
 # v0.16.1
 2017-07-21
 
