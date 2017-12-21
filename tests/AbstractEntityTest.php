@@ -407,6 +407,15 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ExtendingInterface::class, $entity->getMultipleInterfaces()[0]);
         $this->assertInstanceOf(ExtendingInterfaceTwo::class, $entity->getMultipleInterfaces()[1]);
     }
+
+    public function testClone()
+    {
+        $entity = DummyEntity::make(['obj' => DummyEntity::make([])]);
+
+        $entityTwo = clone $entity;
+
+        $this->assertNotSame($entity->getObj(), $entityTwo->getObj());
+    }
 }
 
 /**
