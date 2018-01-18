@@ -23,6 +23,8 @@ tools:
         runs: 1
 
 build:
+    environment:
+        php: '5.6.32'
     tests:
         override:
             - php-scrutinizer-run
