@@ -1,3 +1,6 @@
+## Changed
+- Scrutinizer config (154392323) (153057789)
+
 # v0.17.0
 2017-12-21
 
