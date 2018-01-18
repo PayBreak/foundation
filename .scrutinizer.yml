@@ -21,3 +21,10 @@ tools:
     external_code_coverage:
         timeout: 600
         runs: 1
+
+build:
+    environment:
+        php: '5.6'
+    tests:
+        override:
+            - php-scrutinizer-run
