@@ -1,3 +1,7 @@
+## Added
+- `ArrayAccessTrait`
+- `IteratorTrait`
+
 ## Changed
 - Scrutinizer config (154392323) (153057789)
 
