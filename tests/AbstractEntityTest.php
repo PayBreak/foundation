@@ -97,6 +97,25 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('int', $entity->toArray()['test_field']);
     }
 
+    public function testToArrayComplexData()
+    {
+        $entity = DummyEntity::make([
+            'obj_arr' => [
+                DummyEntity::make(['two' => 5]),
+                DummyEntity::make(['two' => 6]),
+            ],
+        ]);
+
+        $result = $entity->toArray(true);
+
+        $this->assertInternalType('array', $result);
+        $this->assertArrayHasKey('obj_arr', $result);
+        $this->assertInternalType('array', $result['obj_arr']);
+        $this->assertCount(2, $result['obj_arr']);
+        $this->assertInternalType('array', $result['obj_arr'][0]);
+        $this->assertInternalType('array', $result['obj_arr'][1]);
+    }
+
     public function testSetNonExistingProperty()
     {
         $this->setExpectedException(
